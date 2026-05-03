@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: k-typing_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: k-typing_user
+      POSTGRES_PASSWORD: k-typing_password
+      POSTGRES_DB: k-typing_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

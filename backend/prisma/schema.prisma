@@ -22,6 +22,12 @@ model User {
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(3)
   updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
 
+  profile                  UserProfile?
+  interests                UserInterest[]
+  typingSessions           TypingSession[]
+  lessonProgresses         LessonProgress[]
+  generatedQuestionBatches GeneratedQuestionBatch[]
+
   @@map("users")
 }
 
@@ -35,5 +41,223 @@ model Interest {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
 
+  users                    UserInterest[]
+  questions                QuestionInterest[]
+  generatedQuestionBatches GeneratedQuestionBatch[]
+
   @@map("interests")
+}
+
+model UserProfile {
+  id                 String   @id @default(uuid()) @db.Uuid
+  userId             String   @unique @map("user_id") @db.Uuid
+  level              String   @default("beginner") @db.VarChar(30)
+  favoritePerson     String?  @map("favorite_person") @db.VarChar(100)
+  nativeLanguage     String   @default("ja") @map("native_language") @db.VarChar(20)
+  targetKeyboardMode String   @default("system") @map("target_keyboard_mode") @db.VarChar(30)
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+model UserInterest {
+  userId     String   @map("user_id") @db.Uuid
+  interestId String   @map("interest_id") @db.Uuid
+  weight     Int      @default(1)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interest Interest @relation(fields: [interestId], references: [id], onDelete: Cascade)
+
+  @@id([userId, interestId])
+  @@map("user_interests")
+}
+
+model Level {
+  id          String   @id @default(uuid()) @db.Uuid
+  code        String   @unique @db.VarChar(30)
+  title       String   @db.VarChar(100)
+  orderNo     Int      @default(0) @map("order_no")
+  difficulty  String   @default("beginner") @db.VarChar(30)
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  lessons Lesson[]
+
+  @@map("levels")
+}
+
+model Lesson {
+  id               String   @id @default(uuid()) @db.Uuid
+  levelId          String   @map("level_id") @db.Uuid
+  title            String   @db.VarChar(120)
+  themeType        String   @default("default") @map("theme_type") @db.VarChar(50)
+  orderNo          Int      @default(0) @map("order_no")
+  requiredAccuracy Decimal  @default(80.00) @map("required_accuracy") @db.Decimal(5, 2)
+  isActive         Boolean  @default(true) @map("is_active")
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  level            Level            @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  questions        Question[]
+  typingSessions   TypingSession[]
+  lessonProgresses LessonProgress[]
+
+  @@map("lessons")
+}
+
+model Question {
+  id               String   @id @default(uuid()) @db.Uuid
+  lessonId         String   @map("lesson_id") @db.Uuid
+  koreanText       String   @map("korean_text") @db.Text
+  japaneseText     String   @map("japanese_text") @db.Text
+  difficulty       String   @default("beginner") @db.VarChar(30)
+  sourceType       String   @default("seed") @map("source_type") @db.VarChar(30)
+  status           String   @default("published") @db.VarChar(30)
+  generatedBatchId String?  @map("generated_batch_id") @db.Uuid
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  lesson         Lesson                  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  generatedBatch GeneratedQuestionBatch? @relation(fields: [generatedBatchId], references: [id], onDelete: SetNull)
+  interests      QuestionInterest[]
+  vocabItems     VocabItem[]
+  typingAttempts TypingAttempt[]
+  audioAssets    AudioAsset[]
+
+  @@map("questions")
+}
+
+model QuestionInterest {
+  questionId String   @map("question_id") @db.Uuid
+  interestId String   @map("interest_id") @db.Uuid
+  relevance  Decimal  @default(1.00) @db.Decimal(5, 2)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  interest Interest @relation(fields: [interestId], references: [id], onDelete: Cascade)
+
+  @@id([questionId, interestId])
+  @@map("question_interests")
+}
+
+model VocabItem {
+  id           String   @id @default(uuid()) @db.Uuid
+  questionId   String   @map("question_id") @db.Uuid
+  korean       String   @db.VarChar(100)
+  meaningJa    String   @map("meaning_ja") @db.VarChar(200)
+  partOfSpeech String?  @map("part_of_speech") @db.VarChar(50)
+  memo         String?  @db.Text
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@map("vocab_items")
+}
+
+model TypingSession {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  lessonId    String    @map("lesson_id") @db.Uuid
+  startedAt   DateTime  @default(now()) @map("started_at") @db.Timestamp(3)
+  completedAt DateTime? @map("completed_at") @db.Timestamp(3)
+  totalMs     Int?      @map("total_ms")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson   Lesson          @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  attempts TypingAttempt[]
+
+  @@map("typing_sessions")
+}
+
+model TypingAttempt {
+  id           String   @id @default(uuid()) @db.Uuid
+  sessionId    String   @map("session_id") @db.Uuid
+  questionId   String   @map("question_id") @db.Uuid
+  inputText    String   @map("input_text") @db.Text
+  isCorrect    Boolean  @default(false) @map("is_correct")
+  accuracy     Decimal  @default(0.00) @db.Decimal(5, 2)
+  elapsedMs    Int      @default(0) @map("elapsed_ms")
+  mistakeCount Int      @default(0) @map("mistake_count")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  session  TypingSession   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  mistakes TypingMistake[]
+
+  @@map("typing_attempts")
+}
+
+model TypingMistake {
+  id           String   @id @default(uuid()) @db.Uuid
+  attemptId    String   @map("attempt_id") @db.Uuid
+  position     Int
+  expectedChar String?  @map("expected_char") @db.VarChar(10)
+  actualChar   String?  @map("actual_char") @db.VarChar(10)
+  mistakeType  String   @default("CHAR_MISMATCH") @map("mistake_type") @db.VarChar(40)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+
+  attempt TypingAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@map("typing_mistakes")
+}
+
+model LessonProgress {
+  userId       String    @map("user_id") @db.Uuid
+  lessonId     String    @map("lesson_id") @db.Uuid
+  clearedAt    DateTime? @map("cleared_at") @db.Timestamp(3)
+  bestAccuracy Decimal   @default(0.00) @map("best_accuracy") @db.Decimal(5, 2)
+  bestWpm      Decimal   @default(0.00) @map("best_wpm") @db.Decimal(6, 2)
+  clearCount   Int       @default(0) @map("clear_count")
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@id([userId, lessonId])
+  @@map("lesson_progress")
+}
+
+model GeneratedQuestionBatch {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  interestId     String?  @map("interest_id") @db.Uuid
+  prompt         String   @db.Text
+  model          String   @db.VarChar(100)
+  status         String   @default("pending") @db.VarChar(30)
+  generatedCount Int      @default(0) @map("generated_count")
+  rawResponse    Json?    @map("raw_response") @db.JsonB
+  errorMessage   String?  @map("error_message") @db.Text
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interest  Interest?  @relation(fields: [interestId], references: [id], onDelete: SetNull)
+  questions Question[]
+
+  @@map("generated_question_batches")
+}
+
+model AudioAsset {
+  id         String   @id @default(uuid()) @db.Uuid
+  questionId String   @map("question_id") @db.Uuid
+  provider   String   @default("google_cloud_tts") @db.VarChar(50)
+  voiceName  String   @map("voice_name") @db.VarChar(100)
+  storageUrl String   @map("storage_url") @db.Text
+  durationMs Int?     @map("duration_ms")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@map("audio_assets")
 }

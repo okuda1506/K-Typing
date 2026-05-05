@@ -12,6 +12,7 @@ type AnswerState = 'idle' | 'correct' | 'wrong'
 const NEXT_QUESTION_DELAY_MS = 900
 const FINAL_ANSWER_FEEDBACK_DELAY_MS = 650
 const RESULT_LOADING_DELAY_MS = 2000
+const COUNTDOWN_STEP_DELAY_MS = 720
 
 export function TypingPage() {
   const { lessonId } = useParams()
@@ -22,8 +23,11 @@ export function TypingPage() {
   const [mistakeCounts, setMistakeCounts] = useState<number[]>([])
   const [answerState, setAnswerState] = useState<AnswerState>('idle')
   const [isResultLoading, setIsResultLoading] = useState(false)
+  const [countdownValue, setCountdownValue] = useState<number | null>(3)
+  const inputRef = useRef<HTMLInputElement | null>(null)
   const nextTimerRef = useRef<number | null>(null)
   const resultTimerRef = useRef<number | null>(null)
+  const countdownTimersRef = useRef<number[]>([])
 
   const currentQuestion = typingQuestions[currentIndex] ?? typingQuestions[0]
   const judgedChars = useMemo(
@@ -33,7 +37,8 @@ export function TypingPage() {
   const mistakeSummary = useMemo(() => summarizeMistakes(judgedChars), [judgedChars])
   const currentAccuracy = calculateAccuracy(judgedChars)
   const progress = ((currentIndex + 1) / typingQuestions.length) * 100
-  const isAnswering = answerState !== 'idle' || isResultLoading
+  const isCountingDown = countdownValue !== null
+  const isAnswering = isCountingDown || answerState !== 'idle' || isResultLoading
   const isLastQuestion = currentIndex >= typingQuestions.length - 1
   const questionAnimationKey = currentQuestion.id
   const hasInput = normalizeKoreanInput(inputText).length > 0
@@ -49,9 +54,23 @@ export function TypingPage() {
     answerState === 'correct'
       ? 'その調子です！'
       : '後で復習しましょう'
+  const answerButtonLabel = isCountingDown
+    ? '準備中'
+    : isAnswering
+      ? isLastQuestion
+        ? '集計中'
+        : '次の問題へ'
+      : '回答する'
 
   useEffect(() => {
+    countdownTimersRef.current = [
+      window.setTimeout(() => setCountdownValue(2), COUNTDOWN_STEP_DELAY_MS),
+      window.setTimeout(() => setCountdownValue(1), COUNTDOWN_STEP_DELAY_MS * 2),
+      window.setTimeout(() => setCountdownValue(null), COUNTDOWN_STEP_DELAY_MS * 3),
+    ]
+
     return () => {
+      countdownTimersRef.current.forEach((timerId) => window.clearTimeout(timerId))
       if (nextTimerRef.current !== null) {
         window.clearTimeout(nextTimerRef.current)
       }
@@ -60,6 +79,12 @@ export function TypingPage() {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (!isCountingDown) {
+      inputRef.current?.focus()
+    }
+  }, [isCountingDown])
 
   function advanceQuestion(nextAccuracies: number[], nextMistakeCounts: number[]) {
     if (isLastQuestion) {
@@ -168,6 +193,14 @@ export function TypingPage() {
         </div>
       ) : null}
 
+      {countdownValue !== null ? (
+        <div className="countdown-screen" aria-live="polite" aria-label="開始カウントダウン">
+          <strong key={countdownValue} className="countdown-number">
+            {countdownValue}
+          </strong>
+        </div>
+      ) : null}
+
       <label
         key={`input-${questionAnimationKey}`}
         className="field question-transition question-transition-delay-2 reveal-delay-3"
@@ -175,6 +208,7 @@ export function TypingPage() {
       >
         <span>入力</span>
         <input
+          ref={inputRef}
           value={inputText}
           onChange={(event) => setInputText(event.target.value)}
           lang="ko"
@@ -191,7 +225,7 @@ export function TypingPage() {
         disabled={isAnswering}
         data-reveal
       >
-        {isAnswering ? (isLastQuestion ? '集計中' : '次の問題へ') : '回答する'}
+        {answerButtonLabel}
       </button>
     </section>
   )

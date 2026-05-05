@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 
 @Controller('users')
 export class UserController {
@@ -15,5 +15,10 @@ export class UserController {
     @Post()
     create(): string {
         return '新しいユーザーを作成';
+    }
+
+    @Get(':id')
+    getFindOne(@Param('id') id: string): string {
+        return `ID: ${id}のユーザーを取得`;
     }
 }

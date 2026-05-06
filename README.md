@@ -107,6 +107,20 @@ K-Typing/
 - npm
 - Docker Desktop
 
+### 動作環境
+
+現在の開発環境は以下の通り
+
+| 項目 | バージョン |
+| --- | --- |
+| OS | macOS 26.4.1 |
+| Node.js | v23.10.0 |
+| npm | 10.9.2 |
+| Docker | 27.4.0 |
+
+本READMEはmacOSでの動作確認を前提としている。<br>
+Windows環境でも基本的な手順は同じだが、シェル、パス表記、Docker Desktop、環境変数の扱いは利用環境に応じて読み替えること。
+
 ### PostgreSQL 起動
 
 ```bash

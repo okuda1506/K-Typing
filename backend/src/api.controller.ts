@@ -1,25 +1,24 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, HttpStatus, HttpCode } from '@nestjs/common';
 
 @Controller('api')
 export class ApiController {
-    private users = [
-        { id: 1, name: '田中太郎', email: 'tanaka@example.com' },
-        { id: 2, name: '佐藤花子', email: 'sato@example.com' },
-    ];
-
-    @Get()
-    getHello(): string {
-        return 'Hello World!';
+    @Get('health')
+    healthCheck(): object {
+        return {
+            status: 'OK',
+            timestamp: new Date().toISOString(),
+            uptime: process.uptime(),
+        };
     }
 
-    @Get('get_users')
-    findAll(): any[] {
-        return this.users;
+    @Get('version')
+    getVersion(): string {
+        return '1.0.0';
     }
 
-    @Get('count')
-    getCount(): { count: number } {
-        return { count: this.users.length };
+    @Post()
+    @HttpCode(HttpStatus.CREATED)
+    create(): object {
+        return { id: 1 };
     }
 }
-

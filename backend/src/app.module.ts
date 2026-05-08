@@ -5,6 +5,7 @@ import { ApiController } from './api.controller';
 import { ProductsController } from './products.controller';
 import { OrderController } from './orders.controller';
 import { ArticlesController } from './articles.controller';
+import { BlogsController } from './blogs.controller';
 import { AppService } from './app.service';
 
 @Module({
@@ -16,6 +17,7 @@ import { AppService } from './app.service';
         ProductsController,
         OrderController,
         ArticlesController,
+        BlogsController,
     ],
     providers: [AppService],
 })

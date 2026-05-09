@@ -7,6 +7,7 @@ import { OrderController } from './orders.controller';
 import { ArticlesController } from './articles.controller';
 import { BlogsController } from './blogs.controller';
 import { FilesController } from './files.controller';
+import { EventsController } from './events.controller';
 import { AppService } from './app.service';
 
 @Module({
@@ -20,6 +21,7 @@ import { AppService } from './app.service';
         ArticlesController,
         BlogsController,
         FilesController,
+        EventsController,
     ],
     providers: [AppService],
 })

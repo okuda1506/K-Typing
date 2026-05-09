@@ -15,3 +15,5 @@ backend/dist
 backend/.env
 
 postgres_data
+
+.vscode/

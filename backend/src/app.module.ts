@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { UserController } from './users.controller';
+import { UserController } from './users/users.controller';
 import { ApiController } from './api.controller';
 import { ProductsController } from './products.controller';
 import { OrderController } from './orders.controller';
@@ -9,6 +9,7 @@ import { BlogsController } from './blogs.controller';
 import { FilesController } from './files.controller';
 import { EventsController } from './events.controller';
 import { AppService } from './app.service';
+import { UsersService } from './users/users.service';
 
 @Module({
     imports: [],
@@ -23,6 +24,6 @@ import { AppService } from './app.service';
         FilesController,
         EventsController,
     ],
-    providers: [AppService],
+    providers: [AppService, UsersService],
 })
 export class AppModule {}

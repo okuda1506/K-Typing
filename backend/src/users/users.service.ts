@@ -1,37 +1,55 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { Injectable } from '@nestjs/common';
+import { PrismaClient } from '../../generated/prisma/client';
+import type { User } from '../../generated/prisma/client';
 
 @Injectable()
-export class UsersService {
-    private users = [
-        { id: 1, name: 'JURIN', email: 'jurin@example.com' },
-        { id: 2, name: 'CHISA', email: 'chisa@example.com' },
-        { id: 3, name: 'COCONA', email: 'cocona@example.com' },
-    ];
+export class UserService {
+    constructor(private prisma: PrismaClient) {}
 
-    findAll() {
-        return this.users;
+    // 全ユーザー取得
+    async findAll(): Promise<User[]> {
+        return await this.prisma.user.findMany();
     }
 
-    findOne(id: number) {
-        const user = this.users.find((user) => user.id === id);
-
-        if (!user) {
-            throw new NotFoundException(
-                `ID ${id} のユーザーが見つかりません。`,
-            );
-        }
-
-        return user;
+    // UUIDによる単一ユーザー取得
+    async findOne(id: string): Promise<User | null> {
+        return await this.prisma.user.findUnique({
+            where: { id },
+        });
     }
 
-    create(createUserDto: CreateUserDto) {
-        const newUser = {
-            id: this.users.length + 1,
-            ...createUserDto,
-        };
+    // ユーザー作成
+    async create(userData: {
+        name?: string;
+        displayName?: string;
+        email?: string;
+        password?: string;
+    }): Promise<User> {
+        return await this.prisma.user.create({
+            data: userData,
+        });
+    }
 
-        this.users.push(newUser);
-        return newUser;
+    // ユーザーの更新
+    async update(
+        id: string,
+        updateData: {
+            name?: string;
+            displayName?: string;
+            email?: string;
+            password?: string;
+        },
+    ): Promise<User> {
+        return await this.prisma.user.update({
+            where: { id },
+            data: updateData,
+        });
+    }
+
+    // ユーザーの削除
+    async delete(id: string): Promise<User> {
+        return await this.prisma.user.delete({
+            where: { id },
+        });
     }
 }

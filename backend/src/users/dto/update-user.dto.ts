@@ -1,4 +1,4 @@
-export class CreateUserDto {
+export class UpdateUserDto {
     name?: string;
     displayName?: string;
     email?: string;

@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaClient } from '../../generated/prisma/client';
 import type { User } from '../../generated/prisma/client';
 
 @Injectable()
 export class UserService {
-    constructor(private prisma: PrismaClient) {}
+    constructor(private prisma: PrismaClient) { }
 
     // 全ユーザー取得
     async findAll(): Promise<User[]> {
@@ -19,15 +19,18 @@ export class UserService {
     }
 
     // ユーザー作成
-    async create(userData: {
-        name?: string;
-        displayName?: string;
-        email?: string;
-        password?: string;
-    }): Promise<User> {
-        return await this.prisma.user.create({
-            data: userData,
-        });
+    async create(userData: Partial<User>): Promise<User> {
+        try {
+            return await this.prisma.user.create({
+                data: userData,
+            });
+        } catch (error) {
+            if (error === 'P2002') {
+                throw new ConflictException('Email already exists');
+            }
+
+            throw error;
+        }
     }
 
     // ユーザーの更新

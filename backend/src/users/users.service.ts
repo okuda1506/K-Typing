@@ -4,7 +4,7 @@ import type { User } from '../../generated/prisma/client';
 
 @Injectable()
 export class UserService {
-    constructor(private prisma: PrismaClient) { }
+    constructor(private prisma: PrismaClient) {}
 
     // 全ユーザー取得
     async findAll(): Promise<User[]> {

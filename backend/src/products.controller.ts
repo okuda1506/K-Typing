@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Param, Query, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Param,
+    Query,
+    NotFoundException,
+    BadRequestException,
+} from '@nestjs/common';
 
 @Controller('products')
 export class ProductsController {

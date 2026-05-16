@@ -54,11 +54,14 @@ describe('UserController', () => {
 
     // create のテスト
     it('should create a user', async () => {
-        const createUserDto = { name: 'たくっち', email: 'takucchi@example.com' };
+        const createUserDto = {
+            name: 'たくっち',
+            email: 'takucchi@example.com',
+        };
         const mockCreatedUser = { id: 4, ...createUserDto };
         mockUsersService.create.mockReturnValue(mockCreatedUser);
 
-        const result = controller.create(createUserDto as any);
+        const result = controller.create(createUserDto);
 
         expect(result).toEqual(mockCreatedUser);
         expect(mockUsersService.create).toHaveBeenCalledWith(createUserDto);

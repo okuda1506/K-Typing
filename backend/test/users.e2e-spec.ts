@@ -43,9 +43,7 @@ describe('UserController (e2e)', () => {
 
     // GET /users/:id 存在しないID
     it('/users/999 (GET) - not found', () => {
-        return request(app.getHttpServer())
-            .get('/users/999')
-            .expect(404);
+        return request(app.getHttpServer()).get('/users/999').expect(404);
     });
 
     // POST /users

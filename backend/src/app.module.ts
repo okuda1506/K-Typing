@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { PassportModule } from '@nestjs/passport';
 import { AppController } from './app.controller';
 import { UserController } from './users/users.controller';
 import { ApiController } from './api.controller';
@@ -12,7 +13,7 @@ import { AppService } from './app.service';
 import { UsersService } from './users/users.service';
 
 @Module({
-    imports: [],
+    imports: [PassportModule.register({ defaultStrategy: 'jwt' })],
     controllers: [
         AppController,
         UserController,

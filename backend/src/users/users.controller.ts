@@ -6,12 +6,15 @@ import {
     Put,
     Body,
     Delete,
+    UseGuards,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard) // Controller全体に適用
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
@@ -41,5 +44,11 @@ export class UserController {
     @Delete(':id')
     async delete(@Param('id') id: string) {
         return await this.userService.delete(id);
+    }
+
+    @Get('profile')
+    // @UseGuards(JwtAuthGuard) // 特定のメソッドに適用
+    getProfile() {
+        return '';
     }
 }

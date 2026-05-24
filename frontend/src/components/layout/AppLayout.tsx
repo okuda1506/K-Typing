@@ -87,12 +87,16 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <span>01</span>
                 <strong>Home</strong>
               </Link>
-              <Link to="/lessons/lesson-1/typing" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
                 <span>02</span>
+                <strong>Sign up</strong>
+              </Link>
+              <Link to="/lessons/lesson-1/typing" onClick={() => setIsMenuOpen(false)}>
+                <span>03</span>
                 <strong>Typing</strong>
               </Link>
               <Link to="/sessions/mock-session/result" onClick={() => setIsMenuOpen(false)}>
-                <span>03</span>
+                <span>04</span>
                 <strong>Result</strong>
               </Link>
             </nav>

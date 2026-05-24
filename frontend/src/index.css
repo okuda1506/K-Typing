@@ -117,9 +117,9 @@ a {
 .brand strong {
   display: block;
   margin-top: 0;
-  font-family: 'Avenir Next', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 23px;
-  font-weight: 700;
+  font-family: 'Inter', 'Avenir Next', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 500;
   line-height: 1;
 }
 
@@ -285,6 +285,10 @@ a {
 
 .menu-nav a:nth-child(3) {
   animation-delay: 320ms;
+}
+
+.menu-nav a:nth-child(4) {
+  animation-delay: 400ms;
 }
 
 .menu-nav a span {
@@ -512,6 +516,85 @@ a {
 
 .field input:focus {
   border-color: var(--black-muted);
+}
+
+.signup-page {
+  width: min(100%, 920px);
+}
+
+.auth-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+  align-items: start;
+  gap: 72px;
+  width: 100%;
+}
+
+.auth-copy {
+  margin-top: 58px;
+}
+
+.auth-title {
+  display: grid;
+  gap: 2px;
+}
+
+.auth-title span {
+  display: block;
+}
+
+.auth-title span:nth-child(2) {
+  color: #8f969d;
+}
+
+.auth-form {
+  width: 100%;
+  margin-top: 56px;
+  padding: 28px 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.auth-field {
+  width: 100%;
+  margin-top: 22px;
+}
+
+.auth-field input::placeholder {
+  color: var(--quiet);
+}
+
+.form-message {
+  margin: 18px 0 0;
+  color: var(--warning);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.auth-submit {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.auth-footnote {
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+.auth-back-link {
+  display: inline-flex;
+  margin-top: 18px;
+  color: var(--black-muted);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-back-link:hover {
+  text-decoration: underline;
 }
 
 .primary-button {
@@ -1241,6 +1324,22 @@ a {
 
   .result-page {
     padding: 0;
+  }
+
+  .auth-layout {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .auth-copy,
+  .auth-form {
+    margin-top: 32px;
+  }
+
+  .auth-copy {
+    display: grid;
+    justify-items: center;
+    text-align: center;
   }
 }
 

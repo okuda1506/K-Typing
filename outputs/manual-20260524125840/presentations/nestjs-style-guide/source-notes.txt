@@ -1,0 +1,13 @@
+Sources used:
+- NestJS Modules: https://docs.nestjs.com/modules
+- NestJS Controllers: https://docs.nestjs.com/controllers
+- NestJS Providers: https://docs.nestjs.com/components
+- NestJS Validation: https://docs.nestjs.com/techniques/validation
+- NestJS Injection scopes: https://docs.nestjs.com/fundamentals/injection-scopes
+
+Notes:
+- Modules docs support feature module boundaries, shared modules, provider exports/imports, and @Global guidance.
+- Controllers docs support controller routing, method decorators, module registration, and CLI generator hints.
+- Providers docs support provider concept, delegation from controllers to providers, constructor DI, SOLID recommendation, and provider registration.
+- Validation docs support DTO class validation, ValidationPipe, class-validator/class-transformer, whitelist, forbidNonWhitelisted, and transform options.
+- Injection scopes docs support singleton/request-scope caution and request-scope bubbling.

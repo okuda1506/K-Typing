@@ -1,0 +1,28 @@
+Slide size:
+- 1280 x 720
+
+Palette:
+- background: #f3f4f5
+- ink: #24211f
+- muted: #687078
+- line: #dde1e4
+- success: #20b26b
+- danger: #d6453d
+- support blue: #49606f
+
+Typography:
+- Japanese body/title: Hiragino Sans
+- Latin labels: Aptos
+- Code: Menlo
+
+Layout:
+- Editorial technical guide with high whitespace.
+- Dark code blocks for code examples.
+- Green for Do, red for Don't.
+- Thin lines and rectangular containers only.
+
+Banned:
+- decorative icons
+- rounded cards as default
+- marketing-style hero imagery
+- GraphQL terminology

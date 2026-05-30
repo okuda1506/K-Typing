@@ -1,0 +1,1533 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/vkd54a",
+    "id": "vkd54a",
+    "slide": 14,
+    "layoutId": "9a899e78-33c6-4159-9289-ce38d4e60aff",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "a7eeea97-1aee-46b9-80d1-c950296998fe",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Aptos",
+      "Hiragino Sans",
+      "Menlo"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "9a899e78-33c6-4159-9289-ce38d4e60aff",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "a7eeea97-1aee-46b9-80d1-c950296998fe",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "a7eeea97-1aee-46b9-80d1-c950296998fe",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3itgfmlk",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#F3F4F5",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w3m94fu1",
+      "id": "2",
+      "bbox": [
+        1130,
+        642,
+        72,
+        24
+      ],
+      "geometry": "rect",
+      "text": "14",
+      "textPreview": "14",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 13,
+        "typeface": "Aptos",
+        "color": "#A2A9AF",
+        "alignment": "right",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "14"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "14",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "typeface": "Aptos",
+            "color": "#A2A9AF",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "14",
+              "fontSize": 13,
+              "typeface": "Aptos",
+              "color": "#A2A9AF"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/loj2t83i",
+      "id": "3",
+      "bbox": [
+        78,
+        50,
+        260,
+        22
+      ],
+      "geometry": "rect",
+      "text": "NAMING RULES",
+      "textPreview": "NAMING RULES",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 12,
+        "typeface": "Aptos",
+        "color": "#687078",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "NAMING RULES"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "NAMING RULES",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Aptos",
+            "color": "#687078",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "NAMING RULES",
+              "fontSize": 12,
+              "typeface": "Aptos",
+              "color": "#687078",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e9cvixcz",
+      "id": "4",
+      "bbox": [
+        78,
+        86,
+        950,
+        58
+      ],
+      "geometry": "rect",
+      "text": "命名規則を固定する",
+      "textPreview": "命名規則を固定する",
+      "resolvedFontSize": 38,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 38,
+        "typeface": "Hiragino Sans",
+        "color": "#24211F",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "命名規則を固定する"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "命名規則を固定する",
+          "resolvedTextStyle": {
+            "fontSize": 38,
+            "typeface": "Hiragino Sans",
+            "color": "#24211F",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "命名規則を固定する",
+              "fontSize": 38,
+              "typeface": "Hiragino Sans",
+              "color": "#24211F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3q5o7qpg",
+      "id": "5",
+      "bbox": [
+        80,
+        154,
+        880,
+        48
+      ],
+      "geometry": "rect",
+      "text": "ファイル、メソッド、Prisma、DB物理名の揺れをなくす",
+      "textPreview": "ファイル、メソッド、Prisma、DB物理名の揺れをなくす",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Hiragino Sans",
+        "color": "#687078",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "ファイル、メソッド、Prisma、DB物理名の揺れをなくす"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "ファイル、メソッド、Prisma、DB物理名の揺れをなくす",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Hiragino Sans",
+            "color": "#687078",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "ファイル、メソッド、Prisma、DB物理名の揺れをなくす",
+              "fontSize": 18,
+              "typeface": "Hiragino Sans",
+              "color": "#687078"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "6",
+      "bbox": [
+        78,
+        205,
+        1120,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#DDE1E4",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "7",
+      "bbox": [
+        80,
+        238,
+        560,
+        340
+      ],
+      "geometry": "rect",
+      "fillColor": "#1F1F1F",
+      "lineColor": "#1F1F1F",
+      "lineWidth": 1
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ahoza1gv",
+      "id": "8",
+      "bbox": [
+        98,
+        254,
+        524,
+        312
+      ],
+      "geometry": "rect",
+      "text": "// file / directory\nusers/\n  users.module.ts\n  users.controller.ts\n  users.service.ts\n  dto/\n    create-user.dto.ts\n    update-profile.dto.ts\n\n// class / method\nexport class UsersService {\n  findById(id: string) {}\n  findByEmail(email: string) {}\n  create(dto: CreateUserDto) {}\n  updateProfile(id: string, dto: UpdateProfileDto) {}\n}",
+      "textPreview": "// file / directory | users/ |   users.module.ts |   users.controller.ts |   users.service.ts |   dto/ |     create-user.dto.ts |     upd...",
+      "resolvedFontSize": 11.51,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 11.51,
+        "typeface": "Menlo",
+        "color": "#F8F9FA",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 16,
+        "lines": [
+          {
+            "index": 1,
+            "text": "// file / directory"
+          },
+          {
+            "index": 2,
+            "text": "users/"
+          },
+          {
+            "index": 3,
+            "text": "  users.module.ts"
+          },
+          {
+            "index": 4,
+            "text": "  users.controller.ts"
+          },
+          {
+            "index": 5,
+            "text": "  users.service.ts"
+          },
+          {
+            "index": 6,
+            "text": "  dto/"
+          },
+          {
+            "index": 7,
+            "text": "    create-user.dto.ts"
+          },
+          {
+            "index": 8,
+            "text": "    update-profile.dto.ts"
+          },
+          {
+            "index": 9,
+            "text": ""
+          },
+          {
+            "index": 10,
+            "text": "// class / method"
+          },
+          {
+            "index": 11,
+            "text": "export class UsersService {"
+          },
+          {
+            "index": 12,
+            "text": "  findById(id: string) {}"
+          },
+          {
+            "index": 13,
+            "text": "  findByEmail(email: string) {}"
+          },
+          {
+            "index": 14,
+            "text": "  create(dto: CreateUserDto) {}"
+          },
+          {
+            "index": 15,
+            "text": "  updateProfile(id: string, dto: UpdateProfileDto) {}"
+          },
+          {
+            "index": 16,
+            "text": "}"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "// file / directory",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "// file / directory",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "users/",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "users/",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "  users.module.ts",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "  users.module.ts",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "  users.controller.ts",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "  users.controller.ts",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 5,
+          "text": "  users.service.ts",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "  users.service.ts",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 6,
+          "text": "  dto/",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "  dto/",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 7,
+          "text": "    create-user.dto.ts",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "    create-user.dto.ts",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 8,
+          "text": "    update-profile.dto.ts",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "    update-profile.dto.ts",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 10,
+          "text": "// class / method",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "// class / method",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 11,
+          "text": "export class UsersService {",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "export class UsersService {",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 12,
+          "text": "  findById(id: string) {}",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "  findById(id: string) {}",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 13,
+          "text": "  findByEmail(email: string) {}",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "  findByEmail(email: string) {}",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 14,
+          "text": "  create(dto: CreateUserDto) {}",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "  create(dto: CreateUserDto) {}",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 15,
+          "text": "  updateProfile(id: string, dto: UpdateProfileDto) {}",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "  updateProfile(id: string, dto: UpdateProfileDto) {}",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 16,
+          "text": "}",
+          "resolvedTextStyle": {
+            "fontSize": 11.51,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "}",
+              "fontSize": 11.51,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/32lszqtc",
+      "id": "9",
+      "bbox": [
+        690,
+        238,
+        430,
+        188
+      ],
+      "geometry": "rect",
+      "fillColor": "#1F1F1F",
+      "lineColor": "#1F1F1F",
+      "lineWidth": 1
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rqd4vmtw",
+      "id": "10",
+      "bbox": [
+        708,
+        254,
+        394,
+        160
+      ],
+      "geometry": "rect",
+      "text": "model User {\n  id          String   @id @default(uuid()) @db.Uuid\n  displayName String? @map(\"display_name\")\n  createdAt   DateTime @default(now()) @map(\"created_at\")\n  updatedAt   DateTime @updatedAt @map(\"updated_at\")\n\n  @@map(\"users\")\n}",
+      "textPreview": "model User { |   id          String   @id @default(uuid()) @db.Uuid |   displayName String? @map(\"display_name\") |   createdAt   DateTime...",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 12,
+        "typeface": "Menlo",
+        "color": "#F8F9FA",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 9,
+        "lines": [
+          {
+            "index": 1,
+            "text": "model User {"
+          },
+          {
+            "index": 2,
+            "text": "  id          String   @id @default(uuid()) @db.Uuid"
+          },
+          {
+            "index": 3,
+            "text": "  displayName String? @map(\"display_name\")"
+          },
+          {
+            "index": 4,
+            "text": "  createdAt   DateTime @default(now())"
+          },
+          {
+            "index": 5,
+            "text": "@map(\"created_at\")"
+          },
+          {
+            "index": 6,
+            "text": "  updatedAt   DateTime @updatedAt @map(\"updated_at\")"
+          },
+          {
+            "index": 7,
+            "text": ""
+          },
+          {
+            "index": 8,
+            "text": "  @@map(\"users\")"
+          },
+          {
+            "index": 9,
+            "text": "}"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "model User {",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "model User {",
+              "fontSize": 12,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "  id          String   @id @default(uuid()) @db.Uuid",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "  id          String   @id @default(uuid()) @db.Uuid",
+              "fontSize": 12,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "  displayName String? @map(\"display_name\")",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "  displayName String? @map(\"display_name\")",
+              "fontSize": 12,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "  createdAt   DateTime @default(now()) @map(\"created_at\")",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "  createdAt   DateTime @default(now()) @map(\"created_at\")",
+              "fontSize": 12,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 5,
+          "text": "  updatedAt   DateTime @updatedAt @map(\"updated_at\")",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "  updatedAt   DateTime @updatedAt @map(\"updated_at\")",
+              "fontSize": 12,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 7,
+          "text": "  @@map(\"users\")",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "  @@map(\"users\")",
+              "fontSize": 12,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 8,
+          "text": "}",
+          "resolvedTextStyle": {
+            "fontSize": 12,
+            "typeface": "Menlo",
+            "color": "#F8F9FA",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "}",
+              "fontSize": 12,
+              "typeface": "Menlo",
+              "color": "#F8F9FA"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/25kb6xkf",
+      "id": "11",
+      "bbox": [
+        690,
+        414,
+        220,
+        216
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DDE1E4",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9w3m94fu",
+      "id": "12",
+      "bbox": [
+        690,
+        414,
+        5,
+        216
+      ],
+      "geometry": "rect",
+      "fillColor": "#49606F",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kb6xkf6d",
+      "id": "13",
+      "bbox": [
+        712,
+        432,
+        176,
+        26
+      ],
+      "geometry": "rect",
+      "text": "TypeScript側",
+      "textPreview": "TypeScript側",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Hiragino Sans",
+        "color": "#24211F",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "TypeScript側"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "TypeScript側",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Hiragino Sans",
+            "color": "#24211F",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "TypeScript側",
+              "fontSize": 18,
+              "typeface": "Hiragino Sans",
+              "color": "#24211F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/re1w7mp0",
+      "id": "14",
+      "bbox": [
+        712,
+        472,
+        176,
+        116
+      ],
+      "geometry": "rect",
+      "text": "ファイル名はkebab-case\nクラス名はPascalCase\n変数・メソッド名はcamelCase",
+      "textPreview": "ファイル名はkebab-case | クラス名はPascalCase | 変数・メソッド名はcamelCase",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "Hiragino Sans",
+        "color": "#687078",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 4,
+        "lines": [
+          {
+            "index": 1,
+            "text": "ファイル名はkebab-case"
+          },
+          {
+            "index": 2,
+            "text": "クラス名はPascalCase"
+          },
+          {
+            "index": 3,
+            "text": "変数・メソッド名はcamel"
+          },
+          {
+            "index": 4,
+            "text": "Case"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "ファイル名はkebab-case",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Hiragino Sans",
+            "color": "#687078",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "ファイル名はkebab-case",
+              "fontSize": 14,
+              "typeface": "Hiragino Sans",
+              "color": "#687078"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "クラス名はPascalCase",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Hiragino Sans",
+            "color": "#687078",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "クラス名はPascalCase",
+              "fontSize": 14,
+              "typeface": "Hiragino Sans",
+              "color": "#687078"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "変数・メソッド名はcamelCase",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Hiragino Sans",
+            "color": "#687078",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "変数・メソッド名はcamelCase",
+              "fontSize": 14,
+              "typeface": "Hiragino Sans",
+              "color": "#687078"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2t83itgf",
+      "id": "15",
+      "bbox": [
+        940,
+        414,
+        220,
+        216
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#DDE1E4",
+      "lineWidth": 1
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9knih4by",
+      "id": "16",
+      "bbox": [
+        940,
+        414,
+        5,
+        216
+      ],
+      "geometry": "rect",
+      "fillColor": "#20B26B",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kzupwb2h",
+      "id": "17",
+      "bbox": [
+        962,
+        432,
+        176,
+        26
+      ],
+      "geometry": "rect",
+      "text": "DB側",
+      "textPreview": "DB側",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Hiragino Sans",
+        "color": "#24211F",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "DB側"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "DB側",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Hiragino Sans",
+            "color": "#24211F",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "DB側",
+              "fontSize": 18,
+              "typeface": "Hiragino Sans",
+              "color": "#24211F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ra5gbq1o",
+      "id": "18",
+      "bbox": [
+        962,
+        472,
+        176,
+        116
+      ],
+      "geometry": "rect",
+      "text": "テーブル名はsnake_caseの複数形\nカラム名はsnake_case\nPrisma modelは単数形PascalCase",
+      "textPreview": "テーブル名はsnake_caseの複数形 | カラム名はsnake_case | Prisma modelは単数形PascalCase",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "Hiragino Sans",
+        "color": "#687078",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 6,
+        "lines": [
+          {
+            "index": 1,
+            "text": "テーブル名はsnake_caseの"
+          },
+          {
+            "index": 2,
+            "text": "複数形"
+          },
+          {
+            "index": 3,
+            "text": "カラム名はsnake_case"
+          },
+          {
+            "index": 4,
+            "text": "Prisma"
+          },
+          {
+            "index": 5,
+            "text": "modelは単数形PascalCas"
+          },
+          {
+            "index": 6,
+            "text": "e"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "テーブル名はsnake_caseの複数形",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Hiragino Sans",
+            "color": "#687078",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "テーブル名はsnake_caseの複数形",
+              "fontSize": 14,
+              "typeface": "Hiragino Sans",
+              "color": "#687078"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "カラム名はsnake_case",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Hiragino Sans",
+            "color": "#687078",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "カラム名はsnake_case",
+              "fontSize": 14,
+              "typeface": "Hiragino Sans",
+              "color": "#687078"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "Prisma modelは単数形PascalCase",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "typeface": "Hiragino Sans",
+            "color": "#687078",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Prisma modelは単数形PascalCase",
+              "fontSize": 14,
+              "typeface": "Hiragino Sans",
+              "color": "#687078"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2p8nqxs7",
+      "id": "19",
+      "bbox": [
+        78,
+        642,
+        520,
+        22
+      ],
+      "geometry": "rect",
+      "text": "K-Typing Backend Style Guide",
+      "textPreview": "K-Typing Backend Style Guide",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 11,
+        "typeface": "Aptos",
+        "color": "#A2A9AF",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "K-Typing Backend Style Guide"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "K-Typing Backend Style Guide",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "typeface": "Aptos",
+            "color": "#A2A9AF",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "K-Typing Backend Style Guide",
+              "fontSize": 11,
+              "typeface": "Aptos",
+              "color": "#A2A9AF"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

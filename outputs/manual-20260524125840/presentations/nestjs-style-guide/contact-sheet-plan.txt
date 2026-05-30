@@ -1,0 +1,13 @@
+Macro layouts:
+- 01 cover with two rule blocks
+- 02 three philosophy cards + bullets
+- 03 three building block columns
+- 04-06 two-column Do/Don't code split
+- 07 directory tree + rule cards
+- 08 code block + explanation stack
+- 09 two-column Do/Don't code split
+- 10 code block + validation rule
+- 11 command block + rule cards
+- 12 two-column Do/Don't code split
+- 13 checklist with two rule cards
+- 14 source list

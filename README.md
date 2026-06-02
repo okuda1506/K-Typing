@@ -1,20 +1,18 @@
 # K-Typing
 
+## 概要
+
 韓国語学習者が興味関心に合わせた例文をタイピングしながら、単語・文法・分かち書き（띄어쓰기）を習得するためのPWAアプリ
 
-## 概要
+## 開発背景
 
 既存の語学学習アプリは、基本的に用意された選択肢をタップして回答する形式が多く、手軽に学習できる一方で「読めるけど書けない」「正確な綴りが身につきにくい」という課題がある。
 
 K-Typingでは、韓国語の例文を一文字ずつタイピングすることで、ハングル入力、綴り、パッチム、スペースの位置まで含めたアウトプット力の向上を目指す。
 
-また、ユーザーの興味関心に合わせた例文をAIで生成し、学習内容そのものへの没入感を高める。
+このプロジェクトは、TypeScript / NestJS を軸としたモダンな技術スタックのスキル習得も兼ねている。
 
-## 開発背景
-
-このプロジェクトは、TypeScript / NestJS を軸としたモダンな技術スタックのスキル習得も兼ねている。(コードの書き方等は多少汚くなるかもしれない) リファクタリングは随時行う。
-
-バックエンドでは NestJS、GraphQL、Prisma を採用し、フロントエンドでは React / TypeScript を用いてPWAとしてのユーザー体験を構築する。
+バックエンドでは NestJS、Prisma を採用し、フロントエンドでは React を用いてPWAとしてのユーザー体験を構築する。
 
 ## 既存の語学アプリとの差別化
 
@@ -65,13 +63,12 @@ K-Typingでは、韓国語の例文を一文字ずつタイピングすること
 - Vite
 - TypeScript
 - Tailwind CSS
-- GraphQL Client（Apollo Client導入予定）
+- REST API
 
 ### Backend
 
 - NestJS
 - TypeScript
-- GraphQL（Code First）
 - Prisma
 
 ### Database
@@ -93,7 +90,7 @@ K-Typingでは、韓国語の例文を一文字ずつタイピングすること
 
 ```text
 K-Typing/
-├── backend/           # NestJS / GraphQL / Prisma
+├── backend/           # NestJS / REST API / Prisma
 ├── frontend/          # React / Vite
 ├── docker-compose.yml # PostgreSQL
 └── README.md
@@ -118,7 +115,7 @@ K-Typing/
 | npm | 10.9.2 |
 | Docker | 27.4.0 |
 
-本READMEはmacOSでの動作確認を前提としている。<br>
+本READMEはmacOSでの動作確認を前提としている。  
 Windows環境でも基本的な手順は同じだが、シェル、パス表記、Docker Desktop、環境変数の扱いは利用環境に応じて読み替えること。
 
 ### PostgreSQL 起動
@@ -202,7 +199,7 @@ npx prisma generate
 
 ## 開発方針
 
-- バックエンドはNestJS / GraphQL / Prismaのスキル習得を重視し、構造を理解しながら段階的に実装する
+- バックエンドはNestJS / Prismaのスキル習得を重視し、構造を理解しながら段階的に実装する
 - フロントエンドはまず動くUIを優先し、API完成後に実データ接続へ移行する
 - UIは白・黒・グレーを基調に、シンプルで洗練された韓国特有の雰囲気を目指す
 - タイピング体験では、テンポ、フィードバック、達成感を重視する
@@ -210,7 +207,6 @@ npx prisma generate
 ## 今後の実装予定
 
 - Prisma ClientをNestJSから利用するための `PrismaService` 作成
-- GraphQL Resolver / Serviceの実装
 - レッスン・問題取得API
 - タイピング結果保存API
 - タイピング速度計測モード

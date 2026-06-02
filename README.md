@@ -110,7 +110,7 @@ K-Typing/
 
 | 項目 | バージョン |
 | --- | --- |
-| OS | macOS 26.4.1 |
+| OS | macOS Tahoe 26.5 |
 | Node.js | v23.10.0 |
 | npm | 10.9.2 |
 | Docker | 27.4.0 |

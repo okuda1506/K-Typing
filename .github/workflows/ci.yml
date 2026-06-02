@@ -20,6 +20,9 @@ jobs:
       run:
         working-directory: backend
 
+    env:
+      DATABASE_URL: postgresql://k_typing_user:k_typing_password@localhost:5432/k_typing_db?schema=public
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4

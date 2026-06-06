@@ -20,12 +20,12 @@ export class SignUpDto {
     @IsString()
     @IsNotEmpty()
     @MinLength(8)
-    @MaxLength(255)
+    @MaxLength(72)
     password!: string;
 
     @IsString()
     @IsNotEmpty()
     @MinLength(8)
-    @MaxLength(255)
+    @MaxLength(72)
     confirmPassword!: string;
 }

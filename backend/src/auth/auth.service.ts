@@ -3,6 +3,7 @@ import {
     ConflictException,
     Injectable,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 
 import { SignUpDto } from './dto/sign-up.dto';
@@ -11,7 +12,10 @@ import { PublicUser } from '../users/types/public-user.type';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly usersService: UsersService) {}
+    constructor(
+        private readonly usersService: UsersService,
+        private readonly configService: ConfigService,
+    ) {}
 
     async signUp(dto: SignUpDto): Promise<PublicUser> {
         if (dto.password !== dto.confirmPassword) {
@@ -24,7 +28,12 @@ export class AuthService {
             throw new ConflictException('Email is already in use');
         }
 
-        const hashedPassword = await bcrypt.hash(dto.password, 10); // todo: configから読み取る
+        const saltRounds = this.configService.get<number>(
+            'bcryptSaltRounds',
+            10,
+        );
+
+        const hashedPassword = await bcrypt.hash(dto.password, saltRounds);
 
         return this.usersService.create({
             displayName: dto.displayName,

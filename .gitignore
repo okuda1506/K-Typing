@@ -19,3 +19,6 @@ postgres_data
 .vscode/
 
 outputs/
+
+backend/.postman/
+backend/postman/

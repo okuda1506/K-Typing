@@ -18,11 +18,18 @@ export class AuthService {
     ) {}
 
     async signUp(dto: SignUpDto): Promise<PublicUser> {
+        const displayName = dto.displayName.trim();
+        const email = dto.email.trim().toLowerCase();
+
+        if (!displayName) {
+            throw new BadRequestException('Display name is required');
+        }
+
         if (dto.password !== dto.confirmPassword) {
             throw new BadRequestException('Passwords do not match');
         }
 
-        const existingUser = await this.usersService.findByEmail(dto.email);
+        const existingUser = await this.usersService.findByEmail(email);
 
         if (existingUser) {
             throw new ConflictException('Email is already in use');
@@ -36,8 +43,8 @@ export class AuthService {
         const hashedPassword = await bcrypt.hash(dto.password, saltRounds);
 
         return this.usersService.create({
-            displayName: dto.displayName,
-            email: dto.email,
+            displayName: displayName,
+            email: email,
             hashedPassword,
         });
     }

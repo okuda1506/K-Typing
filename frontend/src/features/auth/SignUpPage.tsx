@@ -34,7 +34,7 @@ export function SignUpPage() {
 
     function validateForm() {
         if (!form.displayName.trim()) {
-            return '表示名を入力してください'
+            return '名前を入力してください'
         }
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
@@ -80,11 +80,10 @@ export function SignUpPage() {
                 <form className="auth-form reveal-delay-1" onSubmit={handleSubmit} data-reveal>
                     <div className="section-title">
                         <h2>サインアップ</h2>
-                        <span>Step 1</span>
                     </div>
 
                     <label className="field auth-field">
-                        <span>表示名</span>
+                        <span>名前</span>
                         <input
                             value={form.displayName}
                             onChange={(event) => updateField('displayName', event.target.value)}
@@ -140,12 +139,11 @@ export function SignUpPage() {
                     </button>
 
                     <p className="auth-footnote">
-                        すでにアカウントをお持ちの場合は、後ほどサインイン画面から再開できます。
+                        すでにアカウントをお持ちの場合は
+                        <Link to="/" className="auth-back-link">
+                            こちら
+                        </Link>
                     </p>
-
-                    <Link to="/" className="auth-back-link">
-                        ホームへ戻る
-                    </Link>
                 </form>
             </div>
         </section>

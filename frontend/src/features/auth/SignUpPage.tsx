@@ -89,7 +89,6 @@ export function SignUpPage() {
                             onChange={(event) => updateField('displayName', event.target.value)}
                             type="text"
                             autoComplete="nickname"
-                            placeholder="例: takuya"
                         />
                     </label>
 

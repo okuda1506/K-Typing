@@ -8,7 +8,7 @@ import { JwtPayload } from '../types/jwt-payload.type';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor(private readonly configService: ConfigService) {
+    constructor(configService: ConfigService) {
         // 親クラスのconstructorを呼び出してJWT認証の設定を渡す
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // Authorization: Bearer <token> からtokenを取り出す

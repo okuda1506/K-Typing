@@ -4,9 +4,12 @@ import {
     Injectable,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 import { SignUpDto } from './dto/sign-up.dto';
+import { AuthResponse } from './types/auth-response.type';
+import { JwtPayload } from './types/jwt-payload.type';
 import { UsersService } from '../users/users.service';
 import { PublicUser } from '../users/types/public-user.type';
 
@@ -15,9 +18,10 @@ export class AuthService {
     constructor(
         private readonly usersService: UsersService,
         private readonly configService: ConfigService,
+        private readonly jwtService: JwtService,
     ) {}
 
-    async signUp(dto: SignUpDto): Promise<PublicUser> {
+    async signUp(dto: SignUpDto): Promise<AuthResponse> {
         const displayName = dto.displayName.trim();
         const email = dto.email.trim().toLowerCase();
 
@@ -42,10 +46,26 @@ export class AuthService {
 
         const hashedPassword = await bcrypt.hash(dto.password, saltRounds);
 
-        return this.usersService.create({
-            displayName: displayName,
-            email: email,
+        const user = await this.usersService.create({
+            displayName,
+            email,
             hashedPassword,
         });
+
+        const accessToken = await this.issueAccessToken(user);
+
+        return {
+            user,
+            accessToken,
+        };
+    }
+
+    private async issueAccessToken(user: PublicUser): Promise<string> {
+        const payload: JwtPayload = {
+            sub: user.id,
+            email: user.email,
+        };
+
+        return this.jwtService.signAsync(payload);
     }
 }

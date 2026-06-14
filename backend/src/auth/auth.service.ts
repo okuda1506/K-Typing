@@ -14,6 +14,7 @@ import { AuthResponse } from './types/auth-response.type';
 import { JwtPayload } from './types/jwt-payload.type';
 import { UsersService } from '../users/users.service';
 import { PublicUser } from '../users/types/public-user.type';
+import { UserWithPassword } from '../users/types/user-with-password.type';
 
 @Injectable()
 export class AuthService {
@@ -83,13 +84,7 @@ export class AuthService {
         const accessToken = await this.issueAccessToken(user);
 
         return {
-            user: {
-                id: user.id,
-                displayName: user.displayName,
-                email: user.email,
-                createdAt: user.createdAt,
-                updatedAt: user.updatedAt,
-            },
+            user: this.toPublicUser(user),
             accessToken,
         };
     }
@@ -101,5 +96,15 @@ export class AuthService {
         };
 
         return this.jwtService.signAsync(payload);
+    }
+
+    private toPublicUser(user: UserWithPassword): PublicUser {
+        return {
+            id: user.id,
+            displayName: user.displayName,
+            email: user.email,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+        };
     }
 }

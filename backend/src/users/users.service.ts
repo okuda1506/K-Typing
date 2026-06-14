@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { User } from '@prisma/client';
 import { CreateUserInput } from './types/create-user.input';
 import { PublicUser } from './types/public-user.type';
+import { UserWithPassword } from './types/user-with-password.type';
 
 @Injectable()
 export class UsersService {
@@ -12,6 +13,24 @@ export class UsersService {
         return this.prisma.user.findUnique({
             where: {
                 email,
+            },
+        });
+    }
+
+    async findByEmailWithPassword(
+        email: string,
+    ): Promise<UserWithPassword | null> {
+        return this.prisma.user.findUnique({
+            where: {
+                email,
+            },
+            select: {
+                id: true,
+                displayName: true,
+                email: true,
+                password: true,
+                createdAt: true,
+                updatedAt: true,
             },
         });
     }

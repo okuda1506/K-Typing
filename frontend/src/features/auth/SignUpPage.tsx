@@ -23,6 +23,8 @@ export function SignUpPage() {
     const [errorMessage, setErrorMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
+    const toastMessage = errorMessage || successMessage;
+    const toastType = errorMessage ? 'error' : 'success';
 
     function updateField(field: keyof SignUpForm, value: string) {
         setForm((current) => ({
@@ -76,15 +78,12 @@ export function SignUpPage() {
         }
 
         try {
-            const response = await signUp({
+            await signUp({
                 displayName: form.displayName,
                 email: form.email,
                 password: form.password,
                 confirmPassword: form.confirmPassword,
             });
-
-            console.log(response.user);
-            console.log(response.accessToken);
 
             setSuccessMessage('アカウントを作成しました');
         } catch {
@@ -96,6 +95,17 @@ export function SignUpPage() {
 
     return (
         <section className="page-card signup-page">
+            {toastMessage ? (
+                <div
+                    className={`auth-toast auth-toast-${toastType}`}
+                    role={errorMessage ? 'alert' : 'status'}
+                    aria-live={errorMessage ? 'assertive' : 'polite'}
+                >
+                    <span className="auth-toast-dot" aria-hidden="true" />
+                    <span>{toastMessage}</span>
+                </div>
+            ) : null}
+
             <div className="auth-layout">
                 <header className="page-header auth-copy" data-reveal>
                     <p className="eyebrow">Create account</p>
@@ -155,18 +165,6 @@ export function SignUpPage() {
                             placeholder="もう一度入力"
                         />
                     </label>
-
-                    {errorMessage ? (
-                        <p className="form-message" role="alert">
-                            {errorMessage}
-                        </p>
-                    ) : null}
-
-                    {successMessage ? (
-                        <p className="form-message form-message-success" role="status">
-                            {successMessage}
-                        </p>
-                    ) : null}
 
                     <button type="submit" className="primary-button auth-submit" disabled={isSubmitting}>
                         {isSubmitting ? '作成中...' : 'アカウントを作成'}

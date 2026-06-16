@@ -8,14 +8,14 @@ type SignUpForm = {
     email: string
     password: string
     confirmPassword: string
-}
+};
 
 const initialForm: SignUpForm = {
     displayName: '',
     email: '',
     password: '',
     confirmPassword: '',
-}
+};
 
 export function SignUpPage() {
     // const navigate = useNavigate();
@@ -30,7 +30,7 @@ export function SignUpPage() {
         setForm((current) => ({
             ...current,
             [field]: value,
-        }))
+        }));
 
         if (errorMessage) {
             setErrorMessage('');
@@ -43,22 +43,22 @@ export function SignUpPage() {
 
     function validateForm() {
         if (!form.displayName.trim()) {
-            return '名前を入力してください'
+            return '名前を入力してください';
         }
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-            return 'メールアドレスの形式を確認してください'
+            return 'メールアドレスの形式を確認してください';
         }
 
         if (form.password.length < 8) {
-            return 'パスワードは8文字以上で入力してください'
+            return 'パスワードは8文字以上で入力してください';
         }
 
         if (form.password !== form.confirmPassword) {
-            return '確認用パスワードが一致していません'
+            return '確認用パスワードが一致していません';
         }
 
-        return ''
+        return '';
     }
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {

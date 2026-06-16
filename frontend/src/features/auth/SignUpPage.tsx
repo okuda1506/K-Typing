@@ -1,25 +1,28 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { signUp } from './authApi';
 
 type SignUpForm = {
     displayName: string
     email: string
     password: string
-    passwordConfirmation: string
+    confirmPassword: string
 }
 
 const initialForm: SignUpForm = {
     displayName: '',
     email: '',
     password: '',
-    passwordConfirmation: '',
+    confirmPassword: '',
 }
 
 export function SignUpPage() {
-    const navigate = useNavigate()
-    const [form, setForm] = useState(initialForm)
-    const [errorMessage, setErrorMessage] = useState('')
+    // const navigate = useNavigate();
+    const [form, setForm] = useState(initialForm);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
 
     function updateField(field: keyof SignUpForm, value: string) {
         setForm((current) => ({
@@ -28,7 +31,11 @@ export function SignUpPage() {
         }))
 
         if (errorMessage) {
-            setErrorMessage('')
+            setErrorMessage('');
+        }
+
+        if (successMessage) {
+            setSuccessMessage('');
         }
     }
 
@@ -45,25 +52,47 @@ export function SignUpPage() {
             return 'パスワードは8文字以上で入力してください'
         }
 
-        if (form.password !== form.passwordConfirmation) {
+        if (form.password !== form.confirmPassword) {
             return '確認用パスワードが一致していません'
         }
 
         return ''
     }
 
-    function handleSubmit(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault()
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
 
-        const validationMessage = validateForm()
+        setIsSubmitting(true);
+        setErrorMessage('');
+        setSuccessMessage('');
 
-        if (validationMessage) {
-            setErrorMessage(validationMessage)
-            return
+        const validationError = validateForm();
+
+        if (validationError) {
+            setErrorMessage(validationError);
+            setIsSubmitting(false);
+
+            return;
         }
 
-        navigate('/onboarding')
-    }
+        try {
+            const response = await signUp({
+                displayName: form.displayName,
+                email: form.email,
+                password: form.password,
+                confirmPassword: form.confirmPassword,
+            });
+
+            console.log(response.user);
+            console.log(response.accessToken);
+
+            setSuccessMessage('アカウントを作成しました');
+        } catch {
+            setErrorMessage('アカウント作成に失敗しました');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <section className="page-card signup-page">
@@ -117,9 +146,9 @@ export function SignUpPage() {
                     <label className="field auth-field">
                         <span>パスワード確認</span>
                         <input
-                            value={form.passwordConfirmation}
+                            value={form.confirmPassword}
                             onChange={(event) =>
-                                updateField('passwordConfirmation', event.target.value)
+                                updateField('confirmPassword', event.target.value)
                             }
                             type="password"
                             autoComplete="new-password"
@@ -133,8 +162,14 @@ export function SignUpPage() {
                         </p>
                     ) : null}
 
-                    <button type="submit" className="primary-button auth-submit">
-                        アカウントを作成
+                    {successMessage ? (
+                        <p className="form-message form-message-success" role="status">
+                            {successMessage}
+                        </p>
+                    ) : null}
+
+                    <button type="submit" className="primary-button auth-submit" disabled={isSubmitting}>
+                        {isSubmitting ? '作成中...' : 'アカウントを作成'}
                     </button>
 
                     <p className="auth-footnote">

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { signUp } from './authApi';
+import { saveAuthSession } from './authSession';
 
 type SignUpForm = {
     displayName: string
@@ -85,11 +86,9 @@ export function SignUpPage() {
                 confirmPassword: form.confirmPassword,
             });
 
-            localStorage.setItem('authUser', JSON.stringify(response.user));
-            localStorage.setItem('accessToken', response.accessToken);
+            saveAuthSession(response);
 
             navigate('/');
-
             setSuccessMessage('アカウントを作成しました');
         } catch {
             setErrorMessage('アカウント作成に失敗しました');

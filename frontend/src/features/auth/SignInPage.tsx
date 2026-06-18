@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signIn } from './authApi';
+import { saveAuthSession } from './authSession';
 
 type SignInForm = {
     email: string;
@@ -71,12 +72,10 @@ export function SignInPage() {
                 password: form.password,
             });
 
-            localStorage.setItem('authUser', JSON.stringify(response.user));
-            localStorage.setItem('accessToken', response.accessToken);
-
-            setSuccessMessage('ログインしました');
+            saveAuthSession(response);
 
             navigate('/');
+            setSuccessMessage('ログインしました');
         } catch {
             setErrorMessage('メールアドレスまたはパスワードが正しくありません');
         } finally {

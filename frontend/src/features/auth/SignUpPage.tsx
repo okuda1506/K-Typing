@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
 import { signUp } from './authApi';
 
 type SignUpForm = {
@@ -18,7 +18,7 @@ const initialForm: SignUpForm = {
 };
 
 export function SignUpPage() {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const [form, setForm] = useState(initialForm);
     const [errorMessage, setErrorMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -78,12 +78,17 @@ export function SignUpPage() {
         }
 
         try {
-            await signUp({
+            const response = await signUp({
                 displayName: form.displayName,
                 email: form.email,
                 password: form.password,
                 confirmPassword: form.confirmPassword,
             });
+
+            localStorage.setItem('authUser', JSON.stringify(response.user));
+            localStorage.setItem('accessToken', response.accessToken);
+
+            navigate('/');
 
             setSuccessMessage('アカウントを作成しました');
         } catch {

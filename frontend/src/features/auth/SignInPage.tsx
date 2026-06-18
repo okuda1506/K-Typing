@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { signIn } from './authApi';
 
 type SignInForm = {
@@ -14,6 +14,7 @@ const initialForm: SignInForm = {
 };
 
 export function SignInPage() {
+    const navigate = useNavigate();
     const [form, setForm] = useState(initialForm);
     const [errorMessage, setErrorMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -65,12 +66,17 @@ export function SignInPage() {
         }
 
         try {
-            await signIn({
+            const response = await signIn({
                 email: form.email,
                 password: form.password,
             });
 
+            localStorage.setItem('authUser', JSON.stringify(response.user));
+            localStorage.setItem('accessToken', response.accessToken);
+
             setSuccessMessage('ログインしました');
+
+            navigate('/');
         } catch {
             setErrorMessage('メールアドレスまたはパスワードが正しくありません');
         } finally {

@@ -161,7 +161,7 @@ export function SignUpPage() {
                     </label>
 
                     <button type="submit" className="primary-button auth-submit" disabled={isSubmitting}>
-                        {isSubmitting ? '作成中...' : 'アカウントを作成'}
+                        {isSubmitting ? '作成中...' : 'サインアップ'}
                     </button>
 
                     <p className="auth-footnote">

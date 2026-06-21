@@ -22,3 +22,5 @@ outputs/
 
 backend/.postman/
 backend/postman/
+
+frontend/.env.local

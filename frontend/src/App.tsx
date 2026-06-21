@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AppLayout } from './components/layout/AppLayout'
+import { SignInPage } from './features/auth/SignInPage'
 import { SignUpPage } from './features/auth/SignUpPage'
 import { HomePage } from './features/home/HomePage'
 import { OnboardingPage } from './features/onboarding/OnboardingPage'
@@ -11,6 +12,7 @@ function App() {
         <AppLayout>
             <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/signin" element={<SignInPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
                 <Route path="/onboarding" element={<OnboardingPage />} />
                 <Route path="/lessons/:lessonId/typing" element={<TypingPage />} />

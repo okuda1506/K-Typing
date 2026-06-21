@@ -80,6 +80,7 @@ K-Typingでは、韓国語の例文を一文字ずつタイピングすること
 
 - Gemini API（Google AI SDK）
 - Google Cloud Text-to-Speech
+- Codex (フロントエンドのプロトタイプ実装)
 
 ### Infrastructure
 

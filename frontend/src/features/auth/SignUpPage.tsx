@@ -23,9 +23,6 @@ export function SignUpPage() {
     const [form, setForm] = useState(initialForm);
     const [errorMessage, setErrorMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [successMessage, setSuccessMessage] = useState('');
-    const toastMessage = errorMessage || successMessage;
-    const toastType = errorMessage ? 'error' : 'success';
 
     function updateField(field: keyof SignUpForm, value: string) {
         setForm((current) => ({
@@ -35,10 +32,6 @@ export function SignUpPage() {
 
         if (errorMessage) {
             setErrorMessage('');
-        }
-
-        if (successMessage) {
-            setSuccessMessage('');
         }
     }
 
@@ -67,7 +60,6 @@ export function SignUpPage() {
 
         setIsSubmitting(true);
         setErrorMessage('');
-        setSuccessMessage('');
 
         const validationError = validateForm();
 
@@ -88,25 +80,23 @@ export function SignUpPage() {
 
             saveAuthSession(response);
 
-            navigate('/');
-            setSuccessMessage('アカウントを作成しました');
+            navigate('/onboarding', { replace: true });
         } catch {
             setErrorMessage('アカウント作成に失敗しました');
-        } finally {
             setIsSubmitting(false);
         }
     };
 
     return (
         <section className="page-card auth-page">
-            {toastMessage ? (
+            {errorMessage ? (
                 <div
-                    className={`auth-toast auth-toast-${toastType}`}
-                    role={errorMessage ? 'alert' : 'status'}
-                    aria-live={errorMessage ? 'assertive' : 'polite'}
+                    className="auth-toast auth-toast-error"
+                    role="alert"
+                    aria-live="assertive"
                 >
                     <span className="auth-toast-dot" aria-hidden="true" />
-                    <span>{toastMessage}</span>
+                    <span>{errorMessage}</span>
                 </div>
             ) : null}
 

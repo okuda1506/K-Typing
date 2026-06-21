@@ -19,9 +19,6 @@ export function SignInPage() {
     const [form, setForm] = useState(initialForm);
     const [errorMessage, setErrorMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [successMessage, setSuccessMessage] = useState('');
-    const toastMessage = errorMessage || successMessage;
-    const toastType = errorMessage ? 'error' : 'success';
 
     function updateField(field: keyof SignInForm, value: string) {
         setForm((current) => ({
@@ -31,10 +28,6 @@ export function SignInPage() {
 
         if (errorMessage) {
             setErrorMessage('');
-        }
-
-        if (successMessage) {
-            setSuccessMessage('');
         }
     }
 
@@ -55,7 +48,6 @@ export function SignInPage() {
 
         setIsSubmitting(true);
         setErrorMessage('');
-        setSuccessMessage('');
 
         const validationError = validateForm();
 
@@ -74,25 +66,23 @@ export function SignInPage() {
 
             saveAuthSession(response);
 
-            navigate('/');
-            setSuccessMessage('ログインしました');
+            navigate('/', { replace: true }); // replace: trueで遷移元を履歴から置き換える
         } catch {
             setErrorMessage('メールアドレスまたはパスワードが正しくありません');
-        } finally {
             setIsSubmitting(false);
         }
     };
 
     return (
         <section className="page-card signup-page">
-            {toastMessage ? (
+            {errorMessage ? (
                 <div
-                    className={`auth-toast auth-toast-${toastType}`}
-                    role={errorMessage ? 'alert' : 'status'}
-                    aria-live={errorMessage ? 'assertive' : 'polite'}
+                    className="auth-toast auth-toast-error"
+                    role="alert"
+                    aria-live="assertive"
                 >
                     <span className="auth-toast-dot" aria-hidden="true" />
-                    <span>{toastMessage}</span>
+                    <span>{errorMessage}</span>
                 </div>
             ) : null}
 

@@ -24,3 +24,4 @@ backend/.postman/
 backend/postman/
 
 frontend/.env.local
+AGENTS.md

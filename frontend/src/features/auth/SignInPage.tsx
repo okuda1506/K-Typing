@@ -74,7 +74,7 @@ export function SignInPage() {
     };
 
     return (
-        <section className="page-card signup-page">
+        <section className="page-card auth-page">
             {errorMessage ? (
                 <div
                     className="auth-toast auth-toast-error"

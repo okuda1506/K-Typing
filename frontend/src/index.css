@@ -518,7 +518,7 @@ a {
   border-color: var(--black-muted);
 }
 
-.signup-page {
+.auth-page {
   width: min(100%, 920px);
 }
 

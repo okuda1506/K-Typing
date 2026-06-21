@@ -98,7 +98,7 @@ export function SignUpPage() {
     };
 
     return (
-        <section className="page-card signup-page">
+        <section className="page-card auth-page">
             {toastMessage ? (
                 <div
                     className={`auth-toast auth-toast-${toastType}`}

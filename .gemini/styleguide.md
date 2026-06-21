@@ -105,13 +105,26 @@
 
 ## 命名規則
 
-- ファイル名はkebab-case
+### 共通
+
 - クラス名はPascalCase
 - 変数名、関数名、メソッド名はcamelCase
-- DTOファイルは sign-up.dto.ts のように命名する
-- Serviceは users.service.ts のように命名する
-- Controllerは auth.controller.ts のように命名する
-- テストファイルは *.spec.ts を基本にする
+- テストファイルは `*.spec.ts` を基本にする
+
+### Backend
+
+- ファイル名とディレクトリ名はkebab-case
+- DTOファイルは `sign-up.dto.ts` のように命名する
+- Serviceは `users.service.ts` のように命名する
+- Controllerは `auth.controller.ts` のように命名する
+
+### Frontend
+
+- Reactコンポーネントのファイル名はPascalCase
+- Reactコンポーネントは `SignUpPage.tsx` や `SignInPage.tsx` のように命名する
+- Hookのファイル名は `useScrollReveal.ts` のように `use` から始まるcamelCase
+- API、session、utility、型定義などの通常のTypeScriptファイルはcamelCase
+- 通常のTypeScriptファイルは `authApi.ts`、`authSession.ts`、`typingJudge.ts` のように命名する
 
 ## コメント方針
 

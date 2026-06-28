@@ -10,6 +10,7 @@
   --black-soft: #302d2a;
   --black-muted: #48433f;
   --ink: #272421;
+  --muted-text: #687078;
   --muted: oklch(0.97 0 0);
   --quiet: #a2a9af;
   --line: #dde1e4;
@@ -145,7 +146,7 @@ a {
 .eyebrow {
   display: block;
   margin: 0;
-  color: var(--muted);
+  color: var(--muted-text);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -445,7 +446,7 @@ a {
 .page-header p:last-child {
   max-width: 460px;
   margin: 0;
-  color: var(--muted);
+  color: var(--muted-text);
   line-height: 1.75;
 }
 
@@ -535,7 +536,7 @@ a {
 }
 
 .field span {
-  color: var(--muted);
+  color: var(--muted-text);
   font-size: 11px;
   font-weight: 600;
 }
@@ -668,7 +669,7 @@ a {
 
 .auth-footnote {
   margin: 22px 0 0;
-  color: var(--muted);
+  color: var(--muted-text);
   font-size: 12px;
   font-weight: 500;
   line-height: 1.7;
@@ -742,7 +743,7 @@ a {
 .lesson-row small,
 .metric-row span,
 .word-list-header span {
-  color: var(--muted);
+  color: var(--muted-text);
   font-size: 11px;
   font-weight: 600;
 }
@@ -843,7 +844,7 @@ a {
 
 .typing-count {
   min-width: 44px;
-  color: var(--muted);
+  color: var(--muted-text);
   font-size: 12px;
   font-weight: 600;
   text-align: right;
@@ -888,7 +889,7 @@ a {
 
 .translation {
   margin: 22px 0 0;
-  color: var(--muted);
+  color: var(--muted-text);
   font-weight: 500;
 }
 
@@ -905,7 +906,7 @@ a {
 }
 
 .typing-status span {
-  color: var(--muted);
+  color: var(--muted-text);
   font-size: 12px;
   font-weight: 600;
 }
@@ -1098,7 +1099,7 @@ a {
 
 .result-loading-inner p {
   margin: -6px 0 0;
-  color: var(--muted);
+  color: var(--muted-text);
   font-size: 13px;
   font-weight: 600;
   line-height: 1.6;
@@ -1115,7 +1116,7 @@ a {
 }
 
 .typing-page .field input:disabled {
-  color: var(--muted);
+  color: var(--muted-text);
   background: var(--surface);
 }
 
@@ -1144,7 +1145,7 @@ a {
 .result-hero p:last-child {
   max-width: 420px;
   margin: 0;
-  color: var(--muted);
+  color: var(--muted-text);
   line-height: 1.75;
 }
 
@@ -1245,7 +1246,7 @@ a {
 }
 
 .word-row span {
-  color: var(--muted);
+  color: var(--muted-text);
   font-weight: 500;
 }
 

@@ -586,11 +586,9 @@ a {
   color: #8f969d;
 }
 
-.auth-form {
+.auth-card-form {
   width: 100%;
   margin-top: 56px;
-  padding: 28px 0 0;
-  border-top: 1px solid var(--line);
 }
 
 .auth-field {
@@ -1423,7 +1421,7 @@ a {
   }
 
   .auth-copy,
-  .auth-form {
+  .auth-card-form {
     margin-top: 32px;
   }
 

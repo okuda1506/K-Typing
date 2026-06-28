@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { signIn } from './authApi';
 import { saveAuthSession } from './authSession';
 
@@ -96,43 +103,63 @@ export function SignInPage() {
                     <p>今日も、韓国語を正確に打つ。</p>
                 </header>
 
-                <form className="auth-form reveal-delay-1" onSubmit={handleSubmit} data-reveal>
-                    <div className="section-title">
-                        <h2>サインイン</h2>
-                    </div>
+                <form
+                    className="auth-card-form reveal-delay-1"
+                    onSubmit={handleSubmit}
+                    data-reveal
+                >
+                    <Card className="ring-[var(--line)] bg-white/80 shadow-[0_18px_48px_rgba(32,37,42,0.08)] backdrop-blur">
+                        <CardHeader className="border-b border-[var(--line)]">
+                            <CardTitle className="text-[16px] font-semibold text-[var(--black)]">
+                                サインイン
+                            </CardTitle>
+                        </CardHeader>
 
-                    <label className="field auth-field">
-                        <span>メールアドレス</span>
-                        <input
-                            value={form.email}
-                            onChange={(event) => updateField('email', event.target.value)}
-                            type="email"
-                            autoComplete="email"
-                            placeholder="you@example.com"
-                        />
-                    </label>
+                        <CardContent className="grid pt-1">
+                            <label className="field auth-field">
+                                <span>メールアドレス</span>
+                                <input
+                                    value={form.email}
+                                    onChange={(event) =>
+                                        updateField('email', event.target.value)
+                                    }
+                                    type="email"
+                                    autoComplete="email"
+                                    placeholder="you@example.com"
+                                />
+                            </label>
 
-                    <label className="field auth-field">
-                        <span>パスワード</span>
-                        <input
-                            value={form.password}
-                            onChange={(event) => updateField('password', event.target.value)}
-                            type="password"
-                            autoComplete="current-password"
-                            placeholder="パスワード"
-                        />
-                    </label>
+                            <label className="field auth-field">
+                                <span>パスワード</span>
+                                <input
+                                    value={form.password}
+                                    onChange={(event) =>
+                                        updateField('password', event.target.value)
+                                    }
+                                    type="password"
+                                    autoComplete="current-password"
+                                    placeholder="パスワード"
+                                />
+                            </label>
+                        </CardContent>
 
-                    <button type="submit" className="primary-button auth-submit" disabled={isSubmitting}>
-                        {isSubmitting ? '確認中...' : 'サインイン'}
-                    </button>
+                        <CardFooter className="flex-col items-stretch border-t-0 bg-transparent">
+                            <button
+                                type="submit"
+                                className="primary-button auth-submit"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? '確認中...' : 'サインイン'}
+                            </button>
 
-                    <p className="auth-footnote">
-                        アカウントをお持ちでない場合は
-                        <Link to="/signup" className="auth-back-link">
-                            こちら
-                        </Link>
-                    </p>
+                            <p className="auth-footnote">
+                                アカウントをお持ちでない場合は
+                                <Link to="/signup" className="auth-back-link">
+                                    こちら
+                                </Link>
+                            </p>
+                        </CardFooter>
+                    </Card>
                 </form>
             </div>
         </section>

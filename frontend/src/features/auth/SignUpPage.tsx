@@ -117,8 +117,12 @@ export function SignUpPage() {
                     <p>韓国語を、正確に打つ。</p>
                 </header>
 
-                <form className="auth-form reveal-delay-1" onSubmit={handleSubmit} data-reveal>
-                    <Card className="border-[var(--line)] bg-white/80 shadow-[0_18px_48px_rgba(32,37,42,0.08)] backdrop-blur">
+                <form
+                    className="auth-card-form reveal-delay-1"
+                    onSubmit={handleSubmit}
+                    data-reveal
+                >
+                    <Card className="ring-[var(--line)] bg-white/80 shadow-[0_18px_48px_rgba(32,37,42,0.08)] backdrop-blur">
                         <CardHeader className="border-b border-[var(--line)]">
                             <CardTitle className="text-[16px] font-semibold text-[var(--black)]">
                                 サインアップ

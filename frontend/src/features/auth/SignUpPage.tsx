@@ -1,6 +1,13 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { signUp } from './authApi';
 import { saveAuthSession } from './authSession';
 
@@ -111,65 +118,86 @@ export function SignUpPage() {
                 </header>
 
                 <form className="auth-form reveal-delay-1" onSubmit={handleSubmit} data-reveal>
-                    <div className="section-title">
-                        <h2>サインアップ</h2>
-                    </div>
+                    <Card className="border-[var(--line)] bg-white/80 shadow-[0_18px_48px_rgba(32,37,42,0.08)] backdrop-blur">
+                        <CardHeader className="border-b border-[var(--line)]">
+                            <CardTitle className="text-[16px] font-semibold text-[var(--black)]">
+                                サインアップ
+                            </CardTitle>
+                        </CardHeader>
 
-                    <label className="field auth-field">
-                        <span>名前</span>
-                        <input
-                            value={form.displayName}
-                            onChange={(event) => updateField('displayName', event.target.value)}
-                            type="text"
-                            autoComplete="nickname"
-                        />
-                    </label>
+                        <CardContent className="grid pt-1">
+                            <label className="field auth-field">
+                                <span>名前</span>
+                                <input
+                                    value={form.displayName}
+                                    onChange={(event) =>
+                                        updateField('displayName', event.target.value)
+                                    }
+                                    type="text"
+                                    autoComplete="nickname"
+                                />
+                            </label>
 
-                    <label className="field auth-field">
-                        <span>メールアドレス</span>
-                        <input
-                            value={form.email}
-                            onChange={(event) => updateField('email', event.target.value)}
-                            type="email"
-                            autoComplete="email"
-                            placeholder="you@example.com"
-                        />
-                    </label>
+                            <label className="field auth-field">
+                                <span>メールアドレス</span>
+                                <input
+                                    value={form.email}
+                                    onChange={(event) =>
+                                        updateField('email', event.target.value)
+                                    }
+                                    type="email"
+                                    autoComplete="email"
+                                    placeholder="you@example.com"
+                                />
+                            </label>
 
-                    <label className="field auth-field">
-                        <span>パスワード</span>
-                        <input
-                            value={form.password}
-                            onChange={(event) => updateField('password', event.target.value)}
-                            type="password"
-                            autoComplete="new-password"
-                            placeholder="8文字以上"
-                        />
-                    </label>
+                            <label className="field auth-field">
+                                <span>パスワード</span>
+                                <input
+                                    value={form.password}
+                                    onChange={(event) =>
+                                        updateField('password', event.target.value)
+                                    }
+                                    type="password"
+                                    autoComplete="new-password"
+                                    placeholder="8文字以上"
+                                />
+                            </label>
 
-                    <label className="field auth-field">
-                        <span>パスワード確認</span>
-                        <input
-                            value={form.confirmPassword}
-                            onChange={(event) =>
-                                updateField('confirmPassword', event.target.value)
-                            }
-                            type="password"
-                            autoComplete="new-password"
-                            placeholder="もう一度入力"
-                        />
-                    </label>
+                            <label className="field auth-field">
+                                <span>パスワード確認</span>
+                                <input
+                                    value={form.confirmPassword}
+                                    onChange={(event) =>
+                                        updateField(
+                                            'confirmPassword',
+                                            event.target.value,
+                                        )
+                                    }
+                                    type="password"
+                                    autoComplete="new-password"
+                                    placeholder="もう一度入力"
+                                />
+                            </label>
+                        </CardContent>
 
-                    <button type="submit" className="primary-button auth-submit" disabled={isSubmitting}>
-                        {isSubmitting ? '作成中...' : 'サインアップ'}
-                    </button>
+                        <CardFooter className="flex-col items-stretch border-t-0 bg-transparent">
+                            <button
+                                type="submit"
+                                className="primary-button auth-submit"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? '作成中...' : 'サインアップ'}
+                            </button>
 
-                    <p className="auth-footnote">
-                        すでにアカウントをお持ちの場合は
-                        <Link to="/signin" className="auth-back-link">
-                            こちら
-                        </Link>
-                    </p>
+                            <p className="auth-footnote">
+                                すでにアカウントをお持ちの場合は
+                                <Link to="/signin" className="auth-back-link">
+                                    こちら
+                                </Link>
+                            </p>
+                        </CardFooter>
+                    </Card>
                 </form>
             </div>
         </section>

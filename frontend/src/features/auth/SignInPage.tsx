@@ -124,7 +124,7 @@ export function SignInPage() {
                     </label>
 
                     <button type="submit" className="primary-button auth-submit" disabled={isSubmitting}>
-                        {isSubmitting ? '確認中...' : 'ログイン'}
+                        {isSubmitting ? '確認中...' : 'サインイン'}
                     </button>
 
                     <p className="auth-footnote">

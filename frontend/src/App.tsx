@@ -19,8 +19,8 @@ function App() {
                 <Route path="/lessons/:lessonId/typing" element={<TypingPage />} />
                 <Route path="/sessions/:sessionId/result" element={<ResultPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
-                <Toaster />
             </Routes>
+            <Toaster position="top-center" />
         </AppLayout>
     );
 }

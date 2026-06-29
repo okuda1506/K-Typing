@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/card';
 import { signIn } from './authApi';
 import { saveAuthSession } from './authSession';
+import { toast } from 'sonner';
 
 type SignInForm = {
     email: string;
@@ -72,6 +73,8 @@ export function SignInPage() {
             });
 
             saveAuthSession(response);
+
+            toast.success('ログインしました');
 
             navigate('/', { replace: true }); // replace: trueで遷移元を履歴から置き換える
         } catch {

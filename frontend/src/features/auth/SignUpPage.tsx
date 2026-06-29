@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/card';
 import { signUp } from './authApi';
 import { saveAuthSession } from './authSession';
+import { toast } from 'sonner';
 
 type SignUpForm = {
     displayName: string
@@ -86,6 +87,8 @@ export function SignUpPage() {
             });
 
             saveAuthSession(response);
+
+            toast.success('アカウントを作成しました');
 
             navigate('/onboarding', { replace: true });
         } catch {

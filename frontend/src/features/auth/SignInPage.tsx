@@ -9,13 +9,9 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { signIn } from './authApi';
+import type { SignInForm, SignInFormErrors } from './types';
 import { saveAuthSession } from './authSession';
 import { toast } from 'sonner';
-
-type SignInForm = {
-    email: string;
-    password: string;
-};
 
 const initialForm: SignInForm = {
     email: '',
@@ -25,8 +21,8 @@ const initialForm: SignInForm = {
 export function SignInPage() {
     const navigate = useNavigate();
     const [form, setForm] = useState(initialForm);
-    const [errorMessage, setErrorMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [formErrors, setFormErrors] = useState<SignInFormErrors>({});
 
     function updateField(field: keyof SignInForm, value: string) {
         setForm((current) => ({
@@ -34,33 +30,44 @@ export function SignInPage() {
             [field]: value,
         }));
 
-        if (errorMessage) {
-            setErrorMessage('');
-        }
+        setFormErrors((current) => {
+            if (!current[field]) {
+                return current;
+            }
+
+            const next = { ...current };
+            delete next[field];
+
+            return next;
+        });
     }
 
-    function validateForm() {
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-            return 'メールアドレスの形式を確認してください';
+    function validateForm(): SignInFormErrors {
+        const errors: SignInFormErrors = {};
+
+        if (!form.email.trim()) {
+            errors.email = 'メールアドレスを入力してください';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+            errors.email = 'メールアドレスの形式を確認してください';
         }
 
         if (!form.password) {
-            return 'パスワードを入力してください';
+            errors.password = 'パスワードを入力してください';
         }
 
-        return '';
+        return errors;
     }
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         setIsSubmitting(true);
-        setErrorMessage('');
+        setFormErrors({});
 
-        const validationError = validateForm();
+        const validationErrors = validateForm();
 
-        if (validationError) {
-            setErrorMessage(validationError);
+        if (Object.keys(validationErrors).length > 0) {
+            setFormErrors(validationErrors);
             setIsSubmitting(false);
 
             return;
@@ -85,17 +92,6 @@ export function SignInPage() {
 
     return (
         <section className="page-card auth-page">
-            {errorMessage ? (
-                <div
-                    className="auth-toast auth-toast-error"
-                    role="alert"
-                    aria-live="assertive"
-                >
-                    <span className="auth-toast-dot" aria-hidden="true" />
-                    <span>{errorMessage}</span>
-                </div>
-            ) : null}
-
             <div className="auth-layout">
                 <header className="page-header auth-copy" data-reveal>
                     <p className="eyebrow">Sign in</p>
@@ -109,6 +105,7 @@ export function SignInPage() {
                 <form
                     className="auth-card-form reveal-delay-1"
                     onSubmit={handleSubmit}
+                    noValidate
                     data-reveal
                 >
                     <Card className="ring-[var(--line)] bg-white/80 shadow-[0_18px_48px_rgba(32,37,42,0.08)] backdrop-blur">
@@ -129,7 +126,21 @@ export function SignInPage() {
                                     type="email"
                                     autoComplete="email"
                                     placeholder="you@example.com"
+                                    aria-invalid={Boolean(formErrors.email)}
+                                    aria-describedby={
+                                        formErrors.email
+                                            ? 'signin-email-error'
+                                            : undefined
+                                    }
                                 />
+                                {formErrors.email ? (
+                                    <p
+                                        id="signin-email-error"
+                                        className="field-message"
+                                    >
+                                        {formErrors.email}
+                                    </p>
+                                ) : null}
                             </label>
 
                             <label className="field auth-field">
@@ -142,7 +153,21 @@ export function SignInPage() {
                                     type="password"
                                     autoComplete="current-password"
                                     placeholder="パスワード"
+                                    aria-invalid={Boolean(formErrors.password)}
+                                    aria-describedby={
+                                        formErrors.password
+                                            ? 'signin-password-error'
+                                            : undefined
+                                    }
                                 />
+                                {formErrors.password ? (
+                                    <p
+                                        id="signin-password-error"
+                                        className="field-message"
+                                    >
+                                        {formErrors.password}
+                                    </p>
+                                ) : null}
                             </label>
                         </CardContent>
 

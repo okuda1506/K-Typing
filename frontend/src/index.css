@@ -557,6 +557,19 @@ a {
   border-color: var(--black-muted);
 }
 
+.field input[aria-invalid='true'] {
+  border-color: rgba(220, 55, 55, 0.62);
+  box-shadow: 0 0 0 3px rgba(220, 55, 55, 0.08);
+}
+
+.field-message {
+  margin: -1px 0 0;
+  color: var(--warning);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
 .auth-page {
   width: min(100%, 920px);
 }

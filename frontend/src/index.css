@@ -652,6 +652,61 @@ a {
   }
 }
 
+.toaster .cn-toast[data-y-position='top'] {
+  --y: translateY(0) scale(0.98);
+  transform-origin: top center;
+  transition:
+    transform 420ms ease,
+    opacity 420ms ease,
+    height 400ms ease,
+    box-shadow 200ms ease;
+}
+
+.toaster .cn-toast[data-mounted='true'][data-y-position='top'] {
+  --y: translateY(0) scale(1);
+  animation: k-typing-toast-fade-in 920ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.toaster
+  .cn-toast[data-removed='true'][data-front='true'][data-swipe-out='false'][data-y-position='top'] {
+  --y: translateY(0) scale(0.98);
+  opacity: 0;
+  animation: k-typing-toast-fade-out 180ms ease both;
+}
+
+@keyframes k-typing-toast-fade-in {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(0) scale(0.96);
+  }
+
+  60% {
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes k-typing-toast-fade-out {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(0) scale(0.98);
+  }
+}
+
 .form-message {
   margin: 18px 0 0;
   color: var(--warning);

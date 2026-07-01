@@ -78,7 +78,7 @@ export function SignInPage() {
 
             navigate('/', { replace: true }); // replace: trueで遷移元を履歴から置き換える
         } catch {
-            setErrorMessage('メールアドレスまたはパスワードが正しくありません');
+            toast.error('サインインに失敗しました');
             setIsSubmitting(false);
         }
     };

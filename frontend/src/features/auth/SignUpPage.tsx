@@ -92,7 +92,7 @@ export function SignUpPage() {
 
             navigate('/onboarding', { replace: true });
         } catch {
-            setErrorMessage('アカウント作成に失敗しました');
+            toast.error('サインアップに失敗しました');
             setIsSubmitting(false);
         }
     };

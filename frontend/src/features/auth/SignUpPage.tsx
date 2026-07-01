@@ -33,12 +33,16 @@ export function SignUpPage() {
         }));
 
         setFormErrors((current) => {
-            if (!current[field]) {
+            if (!current[field] && !(field === 'password' && current.confirmPassword)) {
                 return current;
             }
 
             const next = { ...current };
             delete next[field];
+
+            if (field === 'password') {
+                delete next.confirmPassword;
+            }
 
             return next;
         });
@@ -51,11 +55,15 @@ export function SignUpPage() {
             errors.displayName = '名前を入力してください';
         }
 
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+        if (!form.email.trim()) {
+            errors.email = 'メールアドレスを入力してください';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
             errors.email = 'メールアドレスの形式を確認してください';
         }
 
-        if (form.password.length < 8) {
+        if (!form.password) {
+            errors.password = 'パスワードを入力してください';
+        } else if (form.password.length < 8) {
             errors.password = 'パスワードは8文字以上で入力してください';
         }
 

@@ -45,7 +45,9 @@ export function SignInPage() {
     function validateForm(): SignInFormErrors {
         const errors: SignInFormErrors = {};
 
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+        if (!form.email.trim()) {
+            errors.email = 'メールアドレスを入力してください';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
             errors.email = 'メールアドレスの形式を確認してください';
         }
 

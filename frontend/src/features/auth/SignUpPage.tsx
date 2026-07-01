@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import type { FormEvent } from 'react'
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
     Card,
@@ -9,15 +9,9 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { signUp } from './authApi';
+import type { SignUpForm, SignUpFormErrors } from './types';
 import { saveAuthSession } from './authSession';
 import { toast } from 'sonner';
-
-type SignUpForm = {
-    displayName: string
-    email: string
-    password: string
-    confirmPassword: string
-};
 
 const initialForm: SignUpForm = {
     displayName: '',
@@ -29,8 +23,8 @@ const initialForm: SignUpForm = {
 export function SignUpPage() {
     const navigate = useNavigate();
     const [form, setForm] = useState(initialForm);
-    const [errorMessage, setErrorMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [formErrors, setFormErrors] = useState<SignUpFormErrors>({});
 
     function updateField(field: keyof SignUpForm, value: string) {
         setForm((current) => ({
@@ -38,41 +32,50 @@ export function SignUpPage() {
             [field]: value,
         }));
 
-        if (errorMessage) {
-            setErrorMessage('');
-        }
+        setFormErrors((current) => {
+            if (!current[field]) {
+                return current;
+            }
+
+            const next = { ...current };
+            delete next[field];
+
+            return next;
+        });
     }
 
-    function validateForm() {
+    function validateForm(): SignUpFormErrors {
+        const errors: SignUpFormErrors = {};
+
         if (!form.displayName.trim()) {
-            return '名前を入力してください';
+            errors.displayName = '名前を入力してください';
         }
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-            return 'メールアドレスの形式を確認してください';
+            errors.email = 'メールアドレスの形式を確認してください';
         }
 
         if (form.password.length < 8) {
-            return 'パスワードは8文字以上で入力してください';
+            errors.password = 'パスワードは8文字以上で入力してください';
         }
 
         if (form.password !== form.confirmPassword) {
-            return '確認用パスワードが一致していません';
+            errors.confirmPassword = '確認用パスワードが一致していません';
         }
 
-        return '';
+        return errors;
     }
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         setIsSubmitting(true);
-        setErrorMessage('');
+        setFormErrors({});
 
-        const validationError = validateForm();
+        const validationErrors = validateForm();
 
-        if (validationError) {
-            setErrorMessage(validationError);
+        if (Object.keys(validationErrors).length > 0) {
+            setFormErrors(validationErrors);
             setIsSubmitting(false);
 
             return;
@@ -99,17 +102,6 @@ export function SignUpPage() {
 
     return (
         <section className="page-card auth-page">
-            {errorMessage ? (
-                <div
-                    className="auth-toast auth-toast-error"
-                    role="alert"
-                    aria-live="assertive"
-                >
-                    <span className="auth-toast-dot" aria-hidden="true" />
-                    <span>{errorMessage}</span>
-                </div>
-            ) : null}
-
             <div className="auth-layout">
                 <header className="page-header auth-copy" data-reveal>
                     <p className="eyebrow">Create account</p>
@@ -123,6 +115,7 @@ export function SignUpPage() {
                 <form
                     className="auth-card-form reveal-delay-1"
                     onSubmit={handleSubmit}
+                    noValidate
                     data-reveal
                 >
                     <Card className="ring-[var(--line)] bg-white/80 shadow-[0_18px_48px_rgba(32,37,42,0.08)] backdrop-blur">
@@ -142,7 +135,21 @@ export function SignUpPage() {
                                     }
                                     type="text"
                                     autoComplete="nickname"
+                                    aria-invalid={Boolean(formErrors.displayName)}
+                                    aria-describedby={
+                                        formErrors.displayName
+                                            ? 'signup-display-name-error'
+                                            : undefined
+                                    }
                                 />
+                                {formErrors.displayName ? (
+                                    <p
+                                        id="signup-display-name-error"
+                                        className="field-message"
+                                    >
+                                        {formErrors.displayName}
+                                    </p>
+                                ) : null}
                             </label>
 
                             <label className="field auth-field">
@@ -155,7 +162,21 @@ export function SignUpPage() {
                                     type="email"
                                     autoComplete="email"
                                     placeholder="you@example.com"
+                                    aria-invalid={Boolean(formErrors.email)}
+                                    aria-describedby={
+                                        formErrors.email
+                                            ? 'signup-email-error'
+                                            : undefined
+                                    }
                                 />
+                                {formErrors.email ? (
+                                    <p
+                                        id="signup-email-error"
+                                        className="field-message"
+                                    >
+                                        {formErrors.email}
+                                    </p>
+                                ) : null}
                             </label>
 
                             <label className="field auth-field">
@@ -168,7 +189,21 @@ export function SignUpPage() {
                                     type="password"
                                     autoComplete="new-password"
                                     placeholder="8文字以上"
+                                    aria-invalid={Boolean(formErrors.password)}
+                                    aria-describedby={
+                                        formErrors.password
+                                            ? 'signup-password-error'
+                                            : undefined
+                                    }
                                 />
+                                {formErrors.password ? (
+                                    <p
+                                        id="signup-password-error"
+                                        className="field-message"
+                                    >
+                                        {formErrors.password}
+                                    </p>
+                                ) : null}
                             </label>
 
                             <label className="field auth-field">
@@ -184,7 +219,23 @@ export function SignUpPage() {
                                     type="password"
                                     autoComplete="new-password"
                                     placeholder="もう一度入力"
+                                    aria-invalid={Boolean(
+                                        formErrors.confirmPassword,
+                                    )}
+                                    aria-describedby={
+                                        formErrors.confirmPassword
+                                            ? 'signup-confirm-password-error'
+                                            : undefined
+                                    }
                                 />
+                                {formErrors.confirmPassword ? (
+                                    <p
+                                        id="signup-confirm-password-error"
+                                        className="field-message"
+                                    >
+                                        {formErrors.confirmPassword}
+                                    </p>
+                                ) : null}
                             </label>
                         </CardContent>
 
@@ -208,5 +259,5 @@ export function SignUpPage() {
                 </form>
             </div>
         </section>
-    )
+    );
 }

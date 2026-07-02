@@ -8,7 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { signUp } from './authApi';
+import { ApiError, signUp } from './authApi';
 import type { SignUpForm, SignUpFormErrors } from './types';
 import { saveAuthSession } from './authSession';
 import { toast } from 'sonner';
@@ -102,7 +102,16 @@ export function SignUpPage() {
             toast.success('アカウントを作成しました');
 
             navigate('/onboarding', { replace: true });
-        } catch {
+        } catch (error) {
+            if (isEmailAlreadyInUseError(error)) {
+                setFormErrors({
+                    email: 'このメールアドレスはすでに使用されています',
+                });
+                setIsSubmitting(false);
+
+                return;
+            }
+
             toast.error('サインアップに失敗しました');
             setIsSubmitting(false);
         }
@@ -267,5 +276,13 @@ export function SignUpPage() {
                 </form>
             </div>
         </section>
+    );
+}
+
+function isEmailAlreadyInUseError(error: unknown): boolean {
+    return (
+        error instanceof ApiError &&
+        error.statusCode === 409 &&
+        error.messages.includes('Email is already in use')
     );
 }

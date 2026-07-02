@@ -280,9 +280,5 @@ export function SignUpPage() {
 }
 
 function isEmailAlreadyInUseError(error: unknown): boolean {
-    return (
-        error instanceof ApiError &&
-        error.statusCode === 409 &&
-        error.messages.includes('Email is already in use')
-    );
+    return error instanceof ApiError && error.statusCode === 409;
 }

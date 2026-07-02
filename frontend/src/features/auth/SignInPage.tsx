@@ -216,9 +216,5 @@ export function SignInPage() {
 }
 
 function isInvalidCredentialsError(error: unknown): boolean {
-    return (
-        error instanceof ApiError &&
-        error.statusCode === 401 &&
-        error.messages.includes('Invalid email or password')
-    );
+    return error instanceof ApiError && error.statusCode === 401;
 }

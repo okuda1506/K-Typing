@@ -51,7 +51,13 @@ export async function signIn(data: SignInRequest): Promise<AuthResponse> {
 }
 
 async function handleApiResponse<T>(response: Response): Promise<T> {
-    const responseBody: unknown = await response.json();
+    let responseBody: unknown;
+
+    try {
+        responseBody = await response.json();
+    } catch {
+        // HTMLや空レスポンスの場合は、下の汎用エラーへフォールバックする
+    }
 
     if (!response.ok) {
         if (isApiErrorResponse(responseBody)) {

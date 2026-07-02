@@ -8,7 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { signIn } from './authApi';
+import { ApiError, signIn } from './authApi';
 import type { SignInForm, SignInFormErrors } from './types';
 import { saveAuthSession } from './authSession';
 import { toast } from 'sonner';
@@ -23,12 +23,17 @@ export function SignInPage() {
     const [form, setForm] = useState(initialForm);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formErrors, setFormErrors] = useState<SignInFormErrors>({});
+    const [formErrorMessage, setFormErrorMessage] = useState('');
 
     function updateField(field: keyof SignInForm, value: string) {
         setForm((current) => ({
             ...current,
             [field]: value,
         }));
+
+        if (formErrorMessage) {
+            setFormErrorMessage('');
+        }
 
         setFormErrors((current) => {
             if (!current[field]) {
@@ -63,6 +68,7 @@ export function SignInPage() {
 
         setIsSubmitting(true);
         setFormErrors({});
+        setFormErrorMessage('');
 
         const validationErrors = validateForm();
 
@@ -84,7 +90,16 @@ export function SignInPage() {
             toast.success('ログインしました');
 
             navigate('/', { replace: true }); // replace: trueで遷移元を履歴から置き換える
-        } catch {
+        } catch (error) {
+            if (isInvalidCredentialsError(error)) {
+                setFormErrorMessage(
+                    'メールアドレスまたはパスワードが正しくありません',
+                );
+                setIsSubmitting(false);
+
+                return;
+            }
+
             toast.error('サインインに失敗しました');
             setIsSubmitting(false);
         }
@@ -172,6 +187,12 @@ export function SignInPage() {
                         </CardContent>
 
                         <CardFooter className="flex-col items-stretch border-t-0 bg-transparent">
+                            {formErrorMessage ? (
+                                <p className="form-message" role="alert">
+                                    {formErrorMessage}
+                                </p>
+                            ) : null}
+
                             <button
                                 type="submit"
                                 className="primary-button auth-submit"
@@ -191,5 +212,13 @@ export function SignInPage() {
                 </form>
             </div>
         </section>
+    );
+}
+
+function isInvalidCredentialsError(error: unknown): boolean {
+    return (
+        error instanceof ApiError &&
+        error.statusCode === 401 &&
+        error.messages.includes('Invalid email or password')
     );
 }

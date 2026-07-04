@@ -97,6 +97,10 @@ K-Typing/
 └── README.md
 ```
 
+## 関連ドキュメント
+
+- [APIエラーレスポンス仕様](docs/api-error-response.md)
+
 ## ローカル環境構築
 
 ### 前提

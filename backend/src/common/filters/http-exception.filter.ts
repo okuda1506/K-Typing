@@ -3,6 +3,7 @@ import {
     Catch,
     ExceptionFilter,
     HttpException,
+    Logger,
 } from '@nestjs/common';
 import { STATUS_CODES } from 'node:http';
 import { Request, Response } from 'express';
@@ -24,6 +25,8 @@ const HTTP_STATUS = {
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
+    private readonly logger = new Logger(HttpExceptionFilter.name);
+
     catch(exception: unknown, host: ArgumentsHost): void {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
@@ -31,6 +34,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
         const statusCode = this.getStatusCode(exception);
         const exceptionResponse = this.getExceptionResponse(exception);
+
+        this.logServerError(exception, request, statusCode);
 
         const responseBody: ApiErrorResponse = {
             statusCode,
@@ -42,6 +47,25 @@ export class HttpExceptionFilter implements ExceptionFilter {
         };
 
         response.status(statusCode).json(responseBody);
+    }
+
+    private logServerError(
+        exception: unknown,
+        request: Request,
+        statusCode: number,
+    ): void {
+        if (statusCode < HTTP_STATUS.INTERNAL_SERVER_ERROR) {
+            return;
+        }
+
+        const requestLog = `${request.method} ${request.url}`;
+
+        if (exception instanceof Error) {
+            this.logger.error(requestLog, exception.stack);
+            return;
+        }
+
+        this.logger.error(`${requestLog} - ${String(exception)}`);
     }
 
     private getStatusCode(exception: unknown): number {

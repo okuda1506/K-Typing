@@ -28,7 +28,7 @@ export class AuthService {
         private readonly usersService: UsersService,
         private readonly configService: ConfigService,
         private readonly jwtService: JwtService,
-    ) { }
+    ) {}
 
     async signUp(dto: SignUpDto): Promise<AuthResponse> {
         const displayName = dto.displayName.trim();

@@ -23,3 +23,7 @@ export const clearAuthSession = (): void => {
 export const getAccessToken = (): string | null => {
     return localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
 };
+
+export const hasAuthSession = (): boolean => {
+    return Boolean(getAccessToken());
+};

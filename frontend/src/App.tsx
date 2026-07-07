@@ -7,14 +7,17 @@ import { OnboardingPage } from './features/onboarding/OnboardingPage';
 import { ResultPage } from './features/result/ResultPage';
 import { TypingPage } from './features/typing/TypingPage';
 import { Toaster } from '@/components/ui/sonner';
+import { GuestRoute } from './features/auth/GuestRoute';
 
 function App() {
     return (
         <AppLayout>
             <Routes>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/signin" element={<SignInPage />} />
-                <Route path="/signup" element={<SignUpPage />} />
+                <Route element={<GuestRoute />}>
+                    <Route path="/signin" element={<SignInPage />} />
+                    <Route path="/signup" element={<SignUpPage />} />
+                </Route>
                 <Route path="/onboarding" element={<OnboardingPage />} />
                 <Route path="/lessons/:lessonId/typing" element={<TypingPage />} />
                 <Route path="/sessions/:sessionId/result" element={<ResultPage />} />

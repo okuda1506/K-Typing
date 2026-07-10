@@ -8,7 +8,8 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { ApiError, signIn } from './authApi';
+import { ApiError } from '@/lib/apiClient';
+import { signIn } from './authApi';
 import type { SignInForm, SignInFormErrors } from './types';
 import { saveAuthSession } from './authSession';
 import { toast } from 'sonner';

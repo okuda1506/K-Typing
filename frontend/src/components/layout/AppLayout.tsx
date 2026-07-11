@@ -1,38 +1,40 @@
-import { Link, useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import type { ReactNode } from 'react'
-import { useScrollReveal } from '../animation/useScrollReveal'
+import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
+import { useScrollReveal } from '../animation/useScrollReveal';
+import { hasAuthSession } from '@/features/auth/authSession';
 
 type AppLayoutProps = {
-    children: ReactNode
-}
+    children: ReactNode;
+};
 
 export function AppLayout({ children }: AppLayoutProps) {
-    const location = useLocation()
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
-    useScrollReveal(location.pathname)
+    const location = useLocation();
+    const isAuthenticated = hasAuthSession();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    useScrollReveal(location.pathname);
 
     useEffect(() => {
         if (!isMenuOpen) {
-            return
+            return;
         }
 
-        const originalOverflow = document.body.style.overflow
+        const originalOverflow = document.body.style.overflow;
 
         function handleKeyDown(event: KeyboardEvent) {
             if (event.key === 'Escape') {
-                setIsMenuOpen(false)
+                setIsMenuOpen(false);
             }
         }
 
-        document.body.style.overflow = 'hidden'
-        window.addEventListener('keydown', handleKeyDown)
+        document.body.style.overflow = 'hidden';
+        window.addEventListener('keydown', handleKeyDown);
 
         return () => {
-            document.body.style.overflow = originalOverflow
-            window.removeEventListener('keydown', handleKeyDown)
-        }
-    }, [isMenuOpen])
+            document.body.style.overflow = originalOverflow;
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isMenuOpen]);
 
     return (
         <div className="app-shell">
@@ -45,22 +47,24 @@ export function AppLayout({ children }: AppLayoutProps) {
                         </span>
                     </Link>
 
-                    <button
-                        type="button"
-                        className={`menu-trigger ${isMenuOpen ? 'open' : ''}`}
-                        aria-label={isMenuOpen ? 'メニューを閉じる' : 'メニューを開く'}
-                        aria-expanded={isMenuOpen}
-                        aria-controls="app-menu"
-                        onClick={() => setIsMenuOpen((open) => !open)}
-                    >
-                        <span />
-                        <span />
-                        <span />
-                    </button>
+                    {isAuthenticated ? (
+                        <button
+                            type="button"
+                            className={`menu-trigger ${isMenuOpen ? 'open' : ''}`}
+                            aria-label={isMenuOpen ? 'メニューを閉じる' : 'メニューを開く'}
+                            aria-expanded={isMenuOpen}
+                            aria-controls="app-menu"
+                            onClick={() => setIsMenuOpen((open) => !open)}
+                        >
+                            <span />
+                            <span />
+                            <span />
+                        </button>
+                    ) : null}
                 </div>
             </header>
 
-            {isMenuOpen ? (
+            {isAuthenticated && isMenuOpen ? (
                 <div className="menu-overlay" onClick={() => setIsMenuOpen(false)}>
                     <aside
                         id="app-menu"
@@ -106,5 +110,5 @@ export function AppLayout({ children }: AppLayoutProps) {
 
             <main className="main-panel">{children}</main>
         </div>
-    )
+    );
 }

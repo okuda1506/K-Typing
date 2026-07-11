@@ -8,11 +8,11 @@ type FieldError = {
 
 type ApiErrorResponse = {
     statusCode: number;
-    error: string;
+    error?: string;
     message: string | string[];
-    details: FieldError[];
-    path: string;
-    timestamp: string;
+    details?: FieldError[];
+    path?: string;
+    timestamp?: string;
 };
 
 export class ApiError extends Error {
@@ -42,7 +42,7 @@ export async function apiFetch<T>(
 ): Promise<T> {
     const response = await fetch(`${API_BASE_URL}${path}`, {
         ...options,
-        headers: buildJsonHeaders(options.headers),
+        headers: buildJsonHeaders(options.headers, options.body),
     });
 
     return handleApiResponse<T>(response);
@@ -53,7 +53,7 @@ export async function authenticatedApiFetch<T>(
     options: RequestInit = {},
 ): Promise<T> {
     const accessToken = getAccessToken();
-    const headers = buildJsonHeaders(options.headers);
+    const headers = buildJsonHeaders(options.headers, options.body);
 
     if (accessToken) {
         headers.set('Authorization', `Bearer ${accessToken}`);
@@ -67,14 +67,21 @@ export async function authenticatedApiFetch<T>(
     return handleApiResponse<T>(response);
 }
 
-function buildJsonHeaders(headers?: HeadersInit): Headers {
+function buildJsonHeaders(
+    headers?: HeadersInit,
+    body?: BodyInit | null,
+): Headers {
     const nextHeaders = new Headers(headers);
 
-    if (!nextHeaders.has('Content-Type')) {
+    if (!nextHeaders.has('Content-Type') && !isFormData(body)) {
         nextHeaders.set('Content-Type', 'application/json');
     }
 
     return nextHeaders;
+}
+
+function isFormData(body: BodyInit | null | undefined): body is FormData {
+    return typeof FormData !== 'undefined' && body instanceof FormData;
 }
 
 // APIレスポンスが想定したエラー形式かをチェックする
@@ -87,12 +94,38 @@ function isApiErrorResponse(value: unknown): value is ApiErrorResponse {
 
     return (
         typeof response.statusCode === 'number' &&
-        typeof response.error === 'string' &&
-        (typeof response.message === 'string' ||
-            Array.isArray(response.message)) &&
-        Array.isArray(response.details) &&
-        typeof response.path === 'string' &&
-        typeof response.timestamp === 'string'
+        isMessage(response.message) &&
+        (response.error === undefined || typeof response.error === 'string') &&
+        (response.details === undefined || isFieldErrors(response.details)) &&
+        (response.path === undefined || typeof response.path === 'string') &&
+        (response.timestamp === undefined || typeof response.timestamp === 'string')
+    );
+}
+
+function isMessage(value: unknown): value is string | string[] {
+    return (
+        typeof value === 'string' ||
+        (Array.isArray(value) &&
+            value.every((message) => typeof message === 'string'))
+    );
+}
+
+function isFieldErrors(value: unknown): value is FieldError[] {
+    return (
+        Array.isArray(value) &&
+        value.every((fieldError) => {
+            if (!fieldError || typeof fieldError !== 'object') {
+                return false;
+            }
+
+            const response = fieldError as Partial<FieldError>;
+
+            return (
+                typeof response.field === 'string' &&
+                Array.isArray(response.messages) &&
+                response.messages.every((message) => typeof message === 'string')
+            );
+        })
     );
 }
 
@@ -109,9 +142,9 @@ async function handleApiResponse<T>(response: Response): Promise<T> {
         if (isApiErrorResponse(responseBody)) {
             throw new ApiError(
                 responseBody.statusCode,
-                responseBody.error,
+                responseBody.error ?? 'API Error',
                 toMessages(responseBody.message),
-                responseBody.details,
+                responseBody.details ?? [],
             );
         }
 

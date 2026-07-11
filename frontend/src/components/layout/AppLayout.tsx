@@ -51,7 +51,11 @@ export function AppLayout({ children }: AppLayoutProps) {
                         <button
                             type="button"
                             className={`menu-trigger ${isMenuOpen ? 'open' : ''}`}
-                            aria-label={isMenuOpen ? 'メニューを閉じる' : 'メニューを開く'}
+                            aria-label={
+                                isMenuOpen
+                                    ? 'メニューを閉じる'
+                                    : 'メニューを開く'
+                            }
                             aria-expanded={isMenuOpen}
                             aria-controls="app-menu"
                             onClick={() => setIsMenuOpen((open) => !open)}
@@ -65,7 +69,10 @@ export function AppLayout({ children }: AppLayoutProps) {
             </header>
 
             {isAuthenticated && isMenuOpen ? (
-                <div className="menu-overlay" onClick={() => setIsMenuOpen(false)}>
+                <div
+                    className="menu-overlay"
+                    onClick={() => setIsMenuOpen(false)}
+                >
                     <aside
                         id="app-menu"
                         className="menu-drawer"
@@ -91,15 +98,24 @@ export function AppLayout({ children }: AppLayoutProps) {
                                 <span>01</span>
                                 <strong>Home</strong>
                             </Link>
-                            <Link to="/lessons/lesson-1/typing" onClick={() => setIsMenuOpen(false)}>
+                            <Link
+                                to="/lessons/lesson-1/typing"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
                                 <span>02</span>
                                 <strong>Typing</strong>
                             </Link>
-                            <Link to="/sessions/mock-session/result" onClick={() => setIsMenuOpen(false)}>
+                            <Link
+                                to="/sessions/mock-session/result"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
                                 <span>03</span>
                                 <strong>Result</strong>
                             </Link>
-                            <Link to="/signout" onClick={() => setIsMenuOpen(false)}>
+                            <Link
+                                to="/signout"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
                                 <span>04</span>
                                 <strong>Sign out</strong>
                             </Link>

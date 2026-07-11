@@ -1,18 +1,18 @@
-import type { CSSProperties } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { learnedWords } from '../../mock/mockData'
+import type { CSSProperties } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { learnedWords } from '../../mock/mockData';
 
 type ResultLocationState = {
-    accuracy?: number
-    mistakeCount?: number
-}
+    accuracy?: number;
+    mistakeCount?: number;
+};
 
 export function ResultPage() {
-    const location = useLocation()
-    const state = location.state as ResultLocationState | null
-    const accuracy = Math.round(state?.accuracy ?? 92)
-    const mistakeCount = state?.mistakeCount ?? 3
-    const scoreStyle = { '--score': `${accuracy}%` } as CSSProperties
+    const location = useLocation();
+    const state = location.state as ResultLocationState | null;
+    const accuracy = Math.round(state?.accuracy ?? 92);
+    const mistakeCount = state?.mistakeCount ?? 3;
+    const scoreStyle = { '--score': `${accuracy}%` } as CSSProperties;
 
     return (
         <section className="page-card result-page">
@@ -23,7 +23,11 @@ export function ResultPage() {
             </header>
 
             <div className="result-score-panel reveal-delay-1" data-reveal>
-                <div className="score-ring" style={scoreStyle} aria-label={`正確率 ${accuracy}%`}>
+                <div
+                    className="score-ring"
+                    style={scoreStyle}
+                    aria-label={`正確率 ${accuracy}%`}
+                >
                     <div className="score-value">
                         <strong>{accuracy}</strong>
                         <span>%</span>
@@ -60,7 +64,10 @@ export function ResultPage() {
             </section>
 
             <div className="result-actions reveal-delay-3" data-reveal>
-                <Link to="/lessons/lesson-2/typing" className="primary-button link-button">
+                <Link
+                    to="/lessons/lesson-2/typing"
+                    className="primary-button link-button"
+                >
                     次のレッスンへ
                 </Link>
                 <Link to="/" className="secondary-link">
@@ -68,5 +75,5 @@ export function ResultPage() {
                 </Link>
             </div>
         </section>
-    )
+    );
 }

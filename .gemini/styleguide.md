@@ -103,6 +103,13 @@
 - .envやAPIキーなどの機密情報をコミットしていないか確認する
 - DATABASE_URLなどのCI用ダミー値と本番値を混同しない
 
+## Frontendフォーマット
+
+- frontend配下の書式はPrettierの設定に従う
+- TypeScript、TSX、JavaScript、JSXでは文末にセミコロンを付ける
+- 整形は `npm run format`、検査は `npm run format:check` を使用する
+- CIでは `npm run format:check` を実行し、未整形のコードをマージしない
+
 ## 命名規則
 
 ### 共通

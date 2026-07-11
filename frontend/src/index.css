@@ -1,7 +1,7 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@import '@fontsource-variable/geist';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -22,9 +22,11 @@
   --warning-bg: #f4eeee;
   --shadow: 0 16px 44px rgba(32, 37, 42, 0.07);
   --button-edge: #151312;
-  --button-shadow: 0 5px 0 var(--button-edge), 0 14px 24px rgba(32, 37, 42, 0.14);
+  --button-shadow:
+    0 5px 0 var(--button-edge), 0 14px 24px rgba(32, 37, 42, 0.14);
   --surface-edge: #cfd4d8;
-  --surface-button-shadow: 0 4px 0 var(--surface-edge), 0 10px 18px rgba(32, 37, 42, 0.09);
+  --surface-button-shadow:
+    0 4px 0 var(--surface-edge), 0 10px 18px rgba(32, 37, 42, 0.09);
 
   color: var(--ink);
   background: var(--page);
@@ -156,7 +158,8 @@ a {
 .brand strong {
   display: block;
   margin-top: 0;
-  font-family: 'Inter', 'Avenir Next', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  font-family:
+    'Inter', 'Avenir Next', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
   font-size: 22px;
   font-weight: 500;
   line-height: 1;
@@ -253,7 +256,8 @@ a {
 
 .menu-drawer-head span {
   color: var(--black);
-  font-family: 'Avenir Next', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  font-family:
+    'Avenir Next', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
   font-size: 23px;
   font-weight: 700;
   letter-spacing: 0;
@@ -303,7 +307,8 @@ a {
   border-radius: 8px;
   box-shadow: 0 14px 40px rgba(32, 37, 42, 0.08);
   backdrop-filter: blur(20px) saturate(1.06);
-  font-family: 'Inter', 'Avenir Next', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  font-family:
+    'Inter', 'Avenir Next', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
   text-decoration: none;
   transition:
     background 160ms ease,
@@ -520,11 +525,15 @@ a {
 
 .chip:not(:disabled):active {
   transform: translateY(4px);
-  box-shadow: 0 1px 0 var(--surface-edge), 0 4px 10px rgba(32, 37, 42, 0.08);
+  box-shadow:
+    0 1px 0 var(--surface-edge),
+    0 4px 10px rgba(32, 37, 42, 0.08);
 }
 
 .chip.selected:not(:disabled):active {
-  box-shadow: 0 1px 0 var(--button-edge), 0 5px 12px rgba(32, 37, 42, 0.14);
+  box-shadow:
+    0 1px 0 var(--button-edge),
+    0 5px 12px rgba(32, 37, 42, 0.14);
 }
 
 .field {
@@ -777,7 +786,9 @@ a {
 
 .primary-button:not(:disabled):active {
   transform: translateY(4px);
-  box-shadow: 0 1px 0 var(--button-edge), 0 5px 12px rgba(32, 37, 42, 0.14);
+  box-shadow:
+    0 1px 0 var(--button-edge),
+    0 5px 12px rgba(32, 37, 42, 0.14);
 }
 
 .link-button {
@@ -890,7 +901,9 @@ a {
 
 .icon-button:not(:disabled):active {
   transform: translateY(4px);
-  box-shadow: 0 1px 0 var(--surface-edge), 0 4px 10px rgba(32, 37, 42, 0.08);
+  box-shadow:
+    0 1px 0 var(--surface-edge),
+    0 4px 10px rgba(32, 37, 42, 0.08);
 }
 
 .progress-track {
@@ -1059,7 +1072,8 @@ a {
 }
 
 .countdown-number {
-  font-family: 'Avenir Next', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  font-family:
+    'Avenir Next', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
   font-size: clamp(132px, 26vw, 280px);
   font-weight: 700;
   line-height: 1;
@@ -1077,7 +1091,11 @@ a {
   padding: 28px;
   color: var(--black);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(243, 244, 245, 0.96)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.68),
+      rgba(243, 244, 245, 0.96)
+    ),
     var(--page);
   animation: loading-fade 420ms ease both;
 }
@@ -1347,7 +1365,9 @@ a {
 
 .secondary-link:active {
   transform: translateY(4px);
-  box-shadow: 0 1px 0 var(--surface-edge), 0 4px 10px rgba(32, 37, 42, 0.08);
+  box-shadow:
+    0 1px 0 var(--surface-edge),
+    0 4px 10px rgba(32, 37, 42, 0.08);
 }
 
 @keyframes answer-pop {

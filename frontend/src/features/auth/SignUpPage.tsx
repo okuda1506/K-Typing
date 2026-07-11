@@ -34,7 +34,10 @@ export function SignUpPage() {
         }));
 
         setFormErrors((current) => {
-            if (!current[field] && !(field === 'password' && current.confirmPassword)) {
+            if (
+                !current[field] &&
+                !(field === 'password' && current.confirmPassword)
+            ) {
                 return current;
             }
 
@@ -149,11 +152,16 @@ export function SignUpPage() {
                                 <input
                                     value={form.displayName}
                                     onChange={(event) =>
-                                        updateField('displayName', event.target.value)
+                                        updateField(
+                                            'displayName',
+                                            event.target.value,
+                                        )
                                     }
                                     type="text"
                                     autoComplete="nickname"
-                                    aria-invalid={Boolean(formErrors.displayName)}
+                                    aria-invalid={Boolean(
+                                        formErrors.displayName,
+                                    )}
                                     aria-describedby={
                                         formErrors.displayName
                                             ? 'signup-display-name-error'
@@ -202,7 +210,10 @@ export function SignUpPage() {
                                 <input
                                     value={form.password}
                                     onChange={(event) =>
-                                        updateField('password', event.target.value)
+                                        updateField(
+                                            'password',
+                                            event.target.value,
+                                        )
                                     }
                                     type="password"
                                     autoComplete="new-password"

@@ -1,45 +1,45 @@
-import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { interests } from '../../mock/mockData'
+import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { interests } from '../../mock/mockData';
 
-const maxInterests = 3
+const maxInterests = 3;
 
 export function OnboardingPage() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [selectedIds, setSelectedIds] = useState<string[]>([
         'interest-kpop',
         'interest-travel',
-    ])
-    const [favoritePerson, setFavoritePerson] = useState('NewJeans')
+    ]);
+    const [favoritePerson, setFavoritePerson] = useState('NewJeans');
 
     const helperText = useMemo(() => {
         if (selectedIds.length === 0) {
-            return '少なくとも1つ選択してください'
+            return '少なくとも1つ選択してください';
         }
 
-        return `${selectedIds.length}/${maxInterests} 選択中`
-    }, [selectedIds.length])
+        return `${selectedIds.length}/${maxInterests} 選択中`;
+    }, [selectedIds.length]);
 
     function toggleInterest(id: string) {
         setSelectedIds((current) => {
             if (current.includes(id)) {
-                return current.filter((selectedId) => selectedId !== id)
+                return current.filter((selectedId) => selectedId !== id);
             }
 
             if (current.length >= maxInterests) {
-                return current
+                return current;
             }
 
-            return [...current, id]
-        })
+            return [...current, id];
+        });
     }
 
     function handleSubmit() {
         if (selectedIds.length === 0) {
-            return
+            return;
         }
 
-        navigate('/')
+        navigate('/');
     }
 
     return (
@@ -47,9 +47,7 @@ export function OnboardingPage() {
             <header className="page-header" data-reveal>
                 <p className="eyebrow">First setup</p>
                 <h1>あなた専用の韓国語レッスンを作ります</h1>
-                <p>
-                    好きなテーマを選ぶと、例文や単語があなた向けになります。
-                </p>
+                <p>好きなテーマを選ぶと、例文や単語があなた向けになります。</p>
             </header>
 
             <div className="form-section reveal-delay-1" data-reveal>
@@ -59,7 +57,7 @@ export function OnboardingPage() {
                 </div>
                 <div className="chip-list" aria-label="興味選択">
                     {interests.map((interest) => {
-                        const selected = selectedIds.includes(interest.id)
+                        const selected = selectedIds.includes(interest.id);
 
                         return (
                             <button
@@ -70,7 +68,7 @@ export function OnboardingPage() {
                             >
                                 {interest.label}
                             </button>
-                        )
+                        );
                     })}
                 </div>
             </div>
@@ -93,5 +91,5 @@ export function OnboardingPage() {
                 学習を始める
             </button>
         </section>
-    )
+    );
 }

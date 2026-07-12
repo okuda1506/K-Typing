@@ -164,7 +164,10 @@ export function SignInPage() {
                                 <input
                                     value={form.password}
                                     onChange={(event) =>
-                                        updateField('password', event.target.value)
+                                        updateField(
+                                            'password',
+                                            event.target.value,
+                                        )
                                     }
                                     type="password"
                                     autoComplete="current-password"

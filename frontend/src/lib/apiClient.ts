@@ -98,7 +98,8 @@ function isApiErrorResponse(value: unknown): value is ApiErrorResponse {
         (response.error === undefined || typeof response.error === 'string') &&
         (response.details === undefined || isFieldErrors(response.details)) &&
         (response.path === undefined || typeof response.path === 'string') &&
-        (response.timestamp === undefined || typeof response.timestamp === 'string')
+        (response.timestamp === undefined ||
+            typeof response.timestamp === 'string')
     );
 }
 
@@ -123,7 +124,9 @@ function isFieldErrors(value: unknown): value is FieldError[] {
             return (
                 typeof response.field === 'string' &&
                 Array.isArray(response.messages) &&
-                response.messages.every((message) => typeof message === 'string')
+                response.messages.every(
+                    (message) => typeof message === 'string',
+                )
             );
         })
     );

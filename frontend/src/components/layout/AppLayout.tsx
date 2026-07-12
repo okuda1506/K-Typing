@@ -1,38 +1,49 @@
-import { Link, useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import type { ReactNode } from 'react'
-import { useScrollReveal } from '../animation/useScrollReveal'
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { clearAuthSession, hasAuthSession } from '@/features/auth/authSession';
+import { useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
+import { useScrollReveal } from '@/components/animation/useScrollReveal';
 
 type AppLayoutProps = {
-    children: ReactNode
-}
+    children: ReactNode;
+};
 
 export function AppLayout({ children }: AppLayoutProps) {
-    const location = useLocation()
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
-    useScrollReveal(location.pathname)
+    const location = useLocation();
+    const navigate = useNavigate();
+    const isAuthenticated = hasAuthSession();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    useScrollReveal(location.pathname);
 
     useEffect(() => {
         if (!isMenuOpen) {
-            return
+            return;
         }
 
-        const originalOverflow = document.body.style.overflow
+        const originalOverflow = document.body.style.overflow;
 
         function handleKeyDown(event: KeyboardEvent) {
             if (event.key === 'Escape') {
-                setIsMenuOpen(false)
+                setIsMenuOpen(false);
             }
         }
 
-        document.body.style.overflow = 'hidden'
-        window.addEventListener('keydown', handleKeyDown)
+        document.body.style.overflow = 'hidden';
+        window.addEventListener('keydown', handleKeyDown);
 
         return () => {
-            document.body.style.overflow = originalOverflow
-            window.removeEventListener('keydown', handleKeyDown)
-        }
-    }, [isMenuOpen])
+            document.body.style.overflow = originalOverflow;
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isMenuOpen]);
+
+    function handleSignOut() {
+        setIsMenuOpen(false);
+        clearAuthSession();
+        toast.success('サインアウトしました');
+        navigate('/signin', { replace: true });
+    }
 
     return (
         <div className="app-shell">
@@ -45,23 +56,32 @@ export function AppLayout({ children }: AppLayoutProps) {
                         </span>
                     </Link>
 
-                    <button
-                        type="button"
-                        className={`menu-trigger ${isMenuOpen ? 'open' : ''}`}
-                        aria-label={isMenuOpen ? 'メニューを閉じる' : 'メニューを開く'}
-                        aria-expanded={isMenuOpen}
-                        aria-controls="app-menu"
-                        onClick={() => setIsMenuOpen((open) => !open)}
-                    >
-                        <span />
-                        <span />
-                        <span />
-                    </button>
+                    {isAuthenticated ? (
+                        <button
+                            type="button"
+                            className={`menu-trigger ${isMenuOpen ? 'open' : ''}`}
+                            aria-label={
+                                isMenuOpen
+                                    ? 'メニューを閉じる'
+                                    : 'メニューを開く'
+                            }
+                            aria-expanded={isMenuOpen}
+                            aria-controls="app-menu"
+                            onClick={() => setIsMenuOpen((open) => !open)}
+                        >
+                            <span />
+                            <span />
+                            <span />
+                        </button>
+                    ) : null}
                 </div>
             </header>
 
-            {isMenuOpen ? (
-                <div className="menu-overlay" onClick={() => setIsMenuOpen(false)}>
+            {isAuthenticated && isMenuOpen ? (
+                <div
+                    className="menu-overlay"
+                    onClick={() => setIsMenuOpen(false)}
+                >
                     <aside
                         id="app-menu"
                         className="menu-drawer"
@@ -87,18 +107,24 @@ export function AppLayout({ children }: AppLayoutProps) {
                                 <span>01</span>
                                 <strong>Home</strong>
                             </Link>
-                            <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
+                            <Link
+                                to="/lessons/lesson-1/typing"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
                                 <span>02</span>
-                                <strong>Sign up</strong>
-                            </Link>
-                            <Link to="/lessons/lesson-1/typing" onClick={() => setIsMenuOpen(false)}>
-                                <span>03</span>
                                 <strong>Typing</strong>
                             </Link>
-                            <Link to="/sessions/mock-session/result" onClick={() => setIsMenuOpen(false)}>
-                                <span>04</span>
+                            <Link
+                                to="/sessions/mock-session/result"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                <span>03</span>
                                 <strong>Result</strong>
                             </Link>
+                            <button type="button" onClick={handleSignOut}>
+                                <span>04</span>
+                                <strong>Sign out</strong>
+                            </button>
                         </nav>
                     </aside>
                 </div>
@@ -106,5 +132,5 @@ export function AppLayout({ children }: AppLayoutProps) {
 
             <main className="main-panel">{children}</main>
         </div>
-    )
+    );
 }

@@ -1,11 +1,11 @@
-import type { InterestOption, Lesson, TypingQuestion } from '../types/domain'
+import type { InterestOption, Lesson, TypingQuestion } from '../types/domain';
 
 export const interests: InterestOption[] = [
     { id: 'interest-kpop', label: 'K-POP' },
     { id: 'interest-drama', label: 'ドラマ' },
     { id: 'interest-travel', label: '旅行' },
     { id: 'interest-daily', label: '日常' },
-]
+];
 
 export const lessons: Lesson[] = [
     {
@@ -32,7 +32,7 @@ export const lessons: Lesson[] = [
         progress: 0,
         locked: true,
     },
-]
+];
 
 export const typingQuestions: TypingQuestion[] = [
     {
@@ -50,10 +50,10 @@ export const typingQuestions: TypingQuestion[] = [
         koreanText: '이 드라마가 좋아요',
         japaneseText: 'このドラマが好きです。',
     },
-]
+];
 
 export const learnedWords = [
     { korean: '노래', meaningJa: '歌' },
     { korean: '듣다', meaningJa: '聴く' },
     { korean: '좋아요', meaningJa: '好きです' },
-]
+];

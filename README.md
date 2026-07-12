@@ -101,6 +101,7 @@ K-Typing/
 
 - [NestJSディレクトリ構成](docs/directory-structure.md)
 - [APIエラーレスポンス仕様](docs/api-error-response.md)
+- [開発コマンド一覧](docs/development-commands.md)
 
 ## ローカル環境構築
 

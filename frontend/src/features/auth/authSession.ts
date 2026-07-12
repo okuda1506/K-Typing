@@ -9,10 +9,7 @@ export const saveAuthSession = (authResponse: AuthResponse): void => {
         JSON.stringify(authResponse.user),
     );
 
-    localStorage.setItem(
-        ACCESS_TOKEN_STORAGE_KEY,
-        authResponse.accessToken,
-    );
+    localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, authResponse.accessToken);
 };
 
 export const clearAuthSession = (): void => {

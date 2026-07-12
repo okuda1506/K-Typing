@@ -17,8 +17,14 @@ function App() {
                 <Route element={<PrivateRoute />}>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/onboarding" element={<OnboardingPage />} />
-                    <Route path="/lessons/:lessonId/typing" element={<TypingPage />} />
-                    <Route path="/sessions/:sessionId/result" element={<ResultPage />} />
+                    <Route
+                        path="/lessons/:lessonId/typing"
+                        element={<TypingPage />}
+                    />
+                    <Route
+                        path="/sessions/:sessionId/result"
+                        element={<ResultPage />}
+                    />
                 </Route>
                 <Route element={<GuestRoute />}>
                     <Route path="/signin" element={<SignInPage />} />

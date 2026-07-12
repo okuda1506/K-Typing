@@ -1,12 +1,12 @@
-import { useNavigate } from 'react-router-dom'
-import { lessons } from '../../mock/mockData'
+import { useNavigate } from 'react-router-dom';
+import { lessons } from '../../mock/mockData';
 
 export function HomePage() {
-    const navigate = useNavigate()
-    const recommendedLesson = lessons.find((lesson) => !lesson.locked)
+    const navigate = useNavigate();
+    const recommendedLesson = lessons.find((lesson) => !lesson.locked);
 
     function startLesson(lessonId: string) {
-        navigate(`/lessons/${lessonId}/typing`)
+        navigate(`/lessons/${lessonId}/typing`);
     }
 
     return (
@@ -30,7 +30,11 @@ export function HomePage() {
                 </button>
             ) : null}
 
-            <div className="lesson-list reveal-delay-2" aria-label="レッスン一覧" data-reveal>
+            <div
+                className="lesson-list reveal-delay-2"
+                aria-label="レッスン一覧"
+                data-reveal
+            >
                 {lessons.map((lesson, index) => (
                     <button
                         key={lesson.id}
@@ -47,11 +51,15 @@ export function HomePage() {
                             <small>テーマ: {lesson.theme}</small>
                         </span>
                         <small>
-                            {lesson.locked ? 'LOCK' : lesson.progress > 0 ? `${lesson.progress}%` : 'NEXT'}
+                            {lesson.locked
+                                ? 'LOCK'
+                                : lesson.progress > 0
+                                  ? `${lesson.progress}%`
+                                  : 'NEXT'}
                         </small>
                     </button>
                 ))}
             </div>
         </section>
-    )
+    );
 }

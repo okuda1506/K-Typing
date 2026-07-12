@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { clearAuthSession, hasAuthSession } from '@/features/auth/authSession';
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-import { useScrollReveal } from '../animation/useScrollReveal';
+import { useScrollReveal } from '@/components/animation/useScrollReveal';
 
 type AppLayoutProps = {
     children: ReactNode;

@@ -1,8 +1,9 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { clearAuthSession, hasAuthSession } from '@/features/auth/authSession';
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useScrollReveal } from '../animation/useScrollReveal';
-import { hasAuthSession } from '@/features/auth/authSession';
 
 type AppLayoutProps = {
     children: ReactNode;
@@ -10,6 +11,7 @@ type AppLayoutProps = {
 
 export function AppLayout({ children }: AppLayoutProps) {
     const location = useLocation();
+    const navigate = useNavigate();
     const isAuthenticated = hasAuthSession();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     useScrollReveal(location.pathname);
@@ -35,6 +37,13 @@ export function AppLayout({ children }: AppLayoutProps) {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, [isMenuOpen]);
+
+    function handleSignOut() {
+        setIsMenuOpen(false);
+        clearAuthSession();
+        toast.success('サインアウトしました');
+        navigate('/signin', { replace: true });
+    }
 
     return (
         <div className="app-shell">
@@ -112,13 +121,10 @@ export function AppLayout({ children }: AppLayoutProps) {
                                 <span>03</span>
                                 <strong>Result</strong>
                             </Link>
-                            <Link
-                                to="/signout"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
+                            <button type="button" onClick={handleSignOut}>
                                 <span>04</span>
                                 <strong>Sign out</strong>
-                            </Link>
+                            </button>
                         </nav>
                     </aside>
                 </div>

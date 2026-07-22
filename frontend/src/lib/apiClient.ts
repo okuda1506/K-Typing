@@ -15,6 +15,10 @@ type ApiErrorResponse = {
     timestamp?: string;
 };
 
+type UnauthorizedHandler = () => void;
+
+let unauthorizedHandler: UnauthorizedHandler | null = null;
+
 export class ApiError extends Error {
     readonly statusCode: number;
     readonly error: string;
@@ -64,7 +68,38 @@ export async function authenticatedApiFetch<T>(
         headers,
     });
 
+    if (response.status === 401) {
+        notifyUnauthorized();
+    }
+
     return handleApiResponse<T>(response);
+}
+
+/**
+ * 認証必須APIで401が発生した際に実行する処理を登録する関数
+ *
+ * APIクライアントはReact Routerへ依存しないため
+ * セッション削除・Toast表示・サインイン画面への遷移は
+ * 呼び出し側のAuthSessionMonitorで実装する
+ *
+ * 戻り値: コンポーネントのアンマウント時に呼ぶ登録解除関数
+ */
+export function registerUnauthorizedHandler(
+    handler: UnauthorizedHandler,
+): () => void {
+    unauthorizedHandler = handler;
+
+    return () => {
+        // 新しく登録されたHandlerを古いcleanup処理で消さないための確認
+        if (unauthorizedHandler === handler) {
+            unauthorizedHandler = null;
+        }
+    };
+}
+
+// 認証必須APIで401が返ったときに登録済みのログアウト処理を実行する(handlerが未登録の場合は何もしない)
+function notifyUnauthorized(): void {
+    unauthorizedHandler?.();
 }
 
 function buildJsonHeaders(

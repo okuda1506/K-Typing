@@ -9,10 +9,12 @@ import { TypingPage } from './features/typing/TypingPage';
 import { Toaster } from '@/components/ui/sonner';
 import { GuestRoute } from './features/auth/GuestRoute';
 import { PrivateRoute } from './features/auth/PrivateRoute';
+import { AuthSessionMonitor } from './features/auth/AuthSessionMonitor';
 
 function App() {
     return (
         <AppLayout>
+            <AuthSessionMonitor />
             <Routes>
                 <Route element={<PrivateRoute />}>
                     <Route path="/" element={<HomePage />} />

@@ -1,14 +1,14 @@
-import type { AuthResponse } from './types';
+import type { AuthResponse, AuthUser } from './types';
 
 const AUTH_USER_STORAGE_KEY = 'authUser';
 const ACCESS_TOKEN_STORAGE_KEY = 'accessToken';
 
-export const saveAuthSession = (authResponse: AuthResponse): void => {
-    localStorage.setItem(
-        AUTH_USER_STORAGE_KEY,
-        JSON.stringify(authResponse.user),
-    );
+export const updateAuthUser = (user: AuthUser): void => {
+    localStorage.setItem(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
+};
 
+export const saveAuthSession = (authResponse: AuthResponse): void => {
+    updateAuthUser(authResponse.user);
     localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, authResponse.accessToken);
 };
 

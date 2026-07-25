@@ -68,7 +68,11 @@ export async function authenticatedApiFetch<T>(
         headers,
     });
 
-    if (response.status === 401) {
+    if (
+        response.status === 401 &&
+        accessToken !== null &&
+        getAccessToken() === accessToken
+    ) {
         notifyUnauthorized();
     }
 

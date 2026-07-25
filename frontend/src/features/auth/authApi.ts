@@ -1,5 +1,14 @@
-import { apiFetch } from '@/lib/apiClient';
-import type { AuthResponse, SignInRequest, SignUpRequest } from './types';
+import { apiFetch, authenticatedApiFetch } from '@/lib/apiClient';
+import type {
+    AuthResponse,
+    AuthUser,
+    SignInRequest,
+    SignUpRequest,
+} from './types';
+
+export function getCurrentUser(): Promise<AuthUser> {
+    return authenticatedApiFetch<AuthUser>('/users/me');
+}
 
 export function signUp(data: SignUpRequest): Promise<AuthResponse> {
     return apiFetch<AuthResponse>('/auth/signup', {

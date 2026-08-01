@@ -4,13 +4,49 @@ import { interests } from '../../mock/mockData';
 
 const maxInterests = 3;
 
+type PreferenceQuestion = {
+    label: string;
+    placeholder: string;
+};
+
+const preferenceQuestions: Record<string, PreferenceQuestion> = {
+    'interest-kpop': {
+        label: '好きなアーティスト・グループ',
+        placeholder: '例: NewJeans、BTS',
+    },
+    'interest-drama': {
+        label: '好きなドラマ・俳優',
+        placeholder: '例: 涙の女王、キム・スヒョン',
+    },
+    'interest-travel': {
+        label: '行ってみたい韓国の場所',
+        placeholder: '例: ソウル、釜山',
+    },
+    'interest-food': {
+        label: '好きな韓国料理・食べてみたい料理',
+        placeholder: '例: サムギョプサル、トッポッキ',
+    },
+    'interest-beauty-fashion': {
+        label: '興味のあるブランド・アイテム',
+        placeholder: '例: 韓国コスメ、ストリートファッション',
+    },
+    'interest-daily': {
+        label: '学習したい日常の場面',
+        placeholder: '例: カフェ、買い物',
+    },
+};
+
 export function OnboardingPage() {
     const navigate = useNavigate();
     const [selectedIds, setSelectedIds] = useState<string[]>([
         'interest-kpop',
         'interest-travel',
     ]);
-    const [favoritePerson, setFavoritePerson] = useState('NewJeans');
+    const [preferenceAnswers, setPreferenceAnswers] = useState<
+        Record<string, string>
+    >({
+        'interest-kpop': 'NewJeans',
+    });
 
     const helperText = useMemo(() => {
         if (selectedIds.length === 0) {
@@ -34,6 +70,13 @@ export function OnboardingPage() {
         });
     }
 
+    function updatePreferenceAnswer(interestId: string, value: string) {
+        setPreferenceAnswers((current) => ({
+            ...current,
+            [interestId]: value,
+        }));
+    }
+
     function handleSubmit() {
         if (selectedIds.length === 0) {
             return;
@@ -47,7 +90,7 @@ export function OnboardingPage() {
             <header className="page-header" data-reveal>
                 <p className="eyebrow">First setup</p>
                 <h1>あなた専用の韓国語レッスンを作ります</h1>
-                <p>好きなテーマを選ぶと、例文や単語があなた向けになります。</p>
+                <p>好きなテーマを選ぶと例文や単語があなた向けになります。</p>
             </header>
 
             <div className="form-section reveal-delay-1" data-reveal>
@@ -73,14 +116,42 @@ export function OnboardingPage() {
                 </div>
             </div>
 
-            <label className="field reveal-delay-2" data-reveal>
-                <span>好きなアーティストや俳優</span>
-                <input
-                    value={favoritePerson}
-                    onChange={(event) => setFavoritePerson(event.target.value)}
-                    placeholder="例: NewJeans"
-                />
-            </label>
+            {selectedIds.length > 0 ? (
+                <div className="form-section question-transition">
+                    <div className="section-title">
+                        <h2>興味の詳細</h2>
+                        <span>任意</span>
+                    </div>
+
+                    {interests
+                        .filter((interest) => selectedIds.includes(interest.id))
+                        .map((interest) => {
+                            const question = preferenceQuestions[interest.id];
+
+                            if (!question) {
+                                return null;
+                            }
+
+                            return (
+                                <label className="field" key={interest.id}>
+                                    <span>{question.label}</span>
+                                    <input
+                                        value={
+                                            preferenceAnswers[interest.id] ?? ''
+                                        }
+                                        onChange={(event) =>
+                                            updatePreferenceAnswer(
+                                                interest.id,
+                                                event.target.value,
+                                            )
+                                        }
+                                        placeholder={question.placeholder}
+                                    />
+                                </label>
+                            );
+                        })}
+                </div>
+            ) : null}
 
             <button
                 type="button"

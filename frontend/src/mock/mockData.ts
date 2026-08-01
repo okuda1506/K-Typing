@@ -2,9 +2,11 @@ import type { InterestOption, Lesson, TypingQuestion } from '../types/domain';
 
 export const interests: InterestOption[] = [
     { id: 'interest-kpop', label: 'K-POP' },
-    { id: 'interest-drama', label: 'ドラマ' },
-    { id: 'interest-travel', label: '旅行' },
-    { id: 'interest-daily', label: '日常' },
+    { id: 'interest-drama', label: '韓国ドラマ' },
+    { id: 'interest-travel', label: '韓国旅行' },
+    { id: 'interest-food', label: '韓国料理' },
+    { id: 'interest-beauty-fashion', label: '美容・ファッション' },
+    { id: 'interest-daily', label: '日常会話' },
 ];
 
 export const lessons: Lesson[] = [

@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { aiConfig } from './config/ai.config';
 import { appConfig } from './config/app.config';
 import { authConfig } from './config/auth.config';
+import { OnboardingModule } from './onboarding/onboarding.module';
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { authConfig } from './config/auth.config';
         AuthModule,
         UsersModule,
         PrismaModule,
+        OnboardingModule,
     ],
     controllers: [AppController],
     providers: [AppService],

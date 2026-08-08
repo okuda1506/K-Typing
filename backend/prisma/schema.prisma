@@ -31,14 +31,15 @@ model User {
 }
 
 model Interest {
-  id        String   @id @default(uuid()) @db.Uuid
-  key       String   @unique @db.VarChar(50)
-  labelJa   String   @map("label_ja") @db.VarChar(100)
-  labelKo   String?  @map("label_ko") @db.VarChar(100)
-  sortOrder Int      @default(0) @map("sort_order")
-  isActive  Boolean  @default(true) @map("is_active")
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(3)
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
+  id                  String   @id @default(uuid()) @db.Uuid
+  key                 String   @unique @db.VarChar(50)
+  labelJa             String   @map("label_ja") @db.VarChar(100)
+  detailQuestionJa    String   @map("detail_question_ja") @db.VarChar(255)
+  detailPlaceholderJa String   @map("detail_placeholder_ja") @db.VarChar(255)
+  sortOrder           Int      @default(0) @map("sort_order")
+  isActive            Boolean  @default(true) @map("is_active")
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt           DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
 
   users                    UserInterest[]
   questions                QuestionInterest[]

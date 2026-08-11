@@ -1,8 +1,3 @@
-export type InterestOption = {
-    id: string;
-    label: string;
-};
-
 export type Lesson = {
     id: string;
     levelLabel: string;

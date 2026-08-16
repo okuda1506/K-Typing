@@ -1,60 +1,56 @@
-import { useMemo, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
-import { interests } from '../../mock/mockData';
+import { getOnboardingOptions } from './onboardingApi';
 
-const maxInterests = 3;
-
-type PreferenceQuestion = {
-    label: string;
-    placeholder: string;
-};
-
-const preferenceQuestions: Record<string, PreferenceQuestion> = {
-    'interest-kpop': {
-        label: '好きなアーティスト・グループ',
-        placeholder: '例: NewJeans、BTS',
-    },
-    'interest-drama': {
-        label: '好きなドラマ・俳優',
-        placeholder: '例: 涙の女王、キム・スヒョン',
-    },
-    'interest-travel': {
-        label: '行ってみたい韓国の場所',
-        placeholder: '例: ソウル、釜山',
-    },
-    'interest-food': {
-        label: '好きな韓国料理・食べてみたい料理',
-        placeholder: '例: サムギョプサル、トッポッキ',
-    },
-    'interest-beauty-fashion': {
-        label: '興味のあるブランド・アイテム',
-        placeholder: '例: 韓国コスメ、ストリートファッション',
-    },
-    'interest-daily': {
-        label: '学習したい日常の場面',
-        placeholder: '例: カフェ、買い物',
-    },
-};
+import type { OnboardingOptionsResponse } from './types';
 
 export function OnboardingPage() {
     const navigate = useNavigate();
-    const [selectedIds, setSelectedIds] = useState<string[]>([
-        'interest-kpop',
-        'interest-travel',
-    ]);
+    const [options, setOptions] = useState<OnboardingOptionsResponse | null>(
+        null,
+    );
+    const [selectedIds, setSelectedIds] = useState<string[]>([]);
     const [preferenceAnswers, setPreferenceAnswers] = useState<
         Record<string, string>
-    >({
-        'interest-kpop': 'NewJeans',
-    });
+    >({});
+    const [isLoading, setIsLoading] = useState(true);
+    const [loadError, setLoadError] = useState('');
+    const interests = options?.interests ?? [];
+    const maxInterests = options?.maxSelections ?? 0;
+    const helperText =
+        selectedIds.length === 0
+            ? '少なくとも1つ選択してください'
+            : `${selectedIds.length}/${maxInterests} 選択中`;
 
-    const helperText = useMemo(() => {
-        if (selectedIds.length === 0) {
-            return '少なくとも1つ選択してください';
+    useEffect(() => {
+        let isCancelled = false;
+
+        async function loadOptions() {
+            try {
+                const response = await getOnboardingOptions();
+
+                if (!isCancelled) {
+                    setOptions(response);
+                }
+            } catch {
+                if (!isCancelled) {
+                    setLoadError('興味の取得に失敗しました');
+                    toast.error('興味の取得に失敗しました');
+                }
+            } finally {
+                if (!isCancelled) {
+                    setIsLoading(false);
+                }
+            }
         }
 
-        return `${selectedIds.length}/${maxInterests} 選択中`;
-    }, [selectedIds.length]);
+        void loadOptions();
+
+        return () => {
+            isCancelled = true;
+        };
+    }, []);
 
     function toggleInterest(id: string) {
         setSelectedIds((current) => {
@@ -96,24 +92,38 @@ export function OnboardingPage() {
             <div className="form-section reveal-delay-1" data-reveal>
                 <div className="section-title">
                     <h2>興味</h2>
-                    <span>{helperText}</span>
+                    {!isLoading && !loadError ? (
+                        <span>{helperText}</span>
+                    ) : null}
                 </div>
-                <div className="chip-list" aria-label="興味選択">
-                    {interests.map((interest) => {
-                        const selected = selectedIds.includes(interest.id);
 
-                        return (
-                            <button
-                                key={interest.id}
-                                type="button"
-                                className={selected ? 'chip selected' : 'chip'}
-                                onClick={() => toggleInterest(interest.id)}
-                            >
-                                {interest.label}
-                            </button>
-                        );
-                    })}
-                </div>
+                {isLoading ? (
+                    <p role="status">興味を読み込んでいます...</p>
+                ) : loadError ? (
+                    <p className="form-message" role="alert">
+                        {loadError}
+                    </p>
+                ) : (
+                    <div className="chip-list" aria-label="興味選択">
+                        {interests.map((interest) => {
+                            const selected = selectedIds.includes(interest.id);
+
+                            return (
+                                <button
+                                    key={interest.id}
+                                    type="button"
+                                    className={
+                                        selected ? 'chip selected' : 'chip'
+                                    }
+                                    aria-pressed={selected}
+                                    onClick={() => toggleInterest(interest.id)}
+                                >
+                                    {interest.labelJa}
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
             </div>
 
             {selectedIds.length > 0 ? (
@@ -125,31 +135,21 @@ export function OnboardingPage() {
 
                     {interests
                         .filter((interest) => selectedIds.includes(interest.id))
-                        .map((interest) => {
-                            const question = preferenceQuestions[interest.id];
-
-                            if (!question) {
-                                return null;
-                            }
-
-                            return (
-                                <label className="field" key={interest.id}>
-                                    <span>{question.label}</span>
-                                    <input
-                                        value={
-                                            preferenceAnswers[interest.id] ?? ''
-                                        }
-                                        onChange={(event) =>
-                                            updatePreferenceAnswer(
-                                                interest.id,
-                                                event.target.value,
-                                            )
-                                        }
-                                        placeholder={question.placeholder}
-                                    />
-                                </label>
-                            );
-                        })}
+                        .map((interest) => (
+                            <label className="field" key={interest.id}>
+                                <span>{interest.detailQuestionJa}</span>
+                                <input
+                                    value={preferenceAnswers[interest.id] ?? ''}
+                                    onChange={(event) =>
+                                        updatePreferenceAnswer(
+                                            interest.id,
+                                            event.target.value,
+                                        )
+                                    }
+                                    placeholder={interest.detailPlaceholderJa}
+                                />
+                            </label>
+                        ))}
                 </div>
             ) : null}
 
@@ -157,6 +157,9 @@ export function OnboardingPage() {
                 type="button"
                 className="primary-button reveal-delay-3"
                 onClick={handleSubmit}
+                disabled={
+                    isLoading || Boolean(loadError) || selectedIds.length === 0
+                }
                 data-reveal
             >
                 学習を始める

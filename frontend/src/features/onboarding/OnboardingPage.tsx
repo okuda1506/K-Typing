@@ -3,7 +3,10 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { getOnboardingOptions } from './onboardingApi';
 
-import type { OnboardingOptionsResponse } from './types';
+import type {
+    OnboardingOptionsResponse,
+    PreferenceAnswerErrors,
+} from './types';
 
 export function OnboardingPage() {
     const navigate = useNavigate();
@@ -16,6 +19,8 @@ export function OnboardingPage() {
     >({});
     const [isLoading, setIsLoading] = useState(true);
     const [loadError, setLoadError] = useState('');
+    const [preferenceErrors, setPreferenceErrors] =
+        useState<PreferenceAnswerErrors>({});
     const interests = options?.interests ?? [];
     const maxInterests = options?.maxSelections ?? 0;
     const helperText =
@@ -53,6 +58,10 @@ export function OnboardingPage() {
     }, []);
 
     function toggleInterest(id: string) {
+        if (selectedIds.includes(id)) {
+            clearPreferenceError(id);
+        }
+
         setSelectedIds((current) => {
             if (current.includes(id)) {
                 return current.filter((selectedId) => selectedId !== id);
@@ -71,6 +80,8 @@ export function OnboardingPage() {
             ...current,
             [interestId]: value,
         }));
+
+        clearPreferenceError(interestId);
     }
 
     function handleSubmit() {
@@ -78,7 +89,40 @@ export function OnboardingPage() {
             return;
         }
 
+        const validationErrors = validatePreferenceAnswers();
+
+        if (Object.keys(validationErrors).length > 0) {
+            setPreferenceErrors(validationErrors);
+            return;
+        }
+
+        setPreferenceErrors({});
         navigate('/');
+    }
+
+    function clearPreferenceError(interestId: string) {
+        setPreferenceErrors((currentErrors) => {
+            if (!currentErrors[interestId]) {
+                return currentErrors;
+            }
+
+            const nextErrors = { ...currentErrors };
+            delete nextErrors[interestId];
+
+            return nextErrors;
+        });
+    }
+
+    function validatePreferenceAnswers(): PreferenceAnswerErrors {
+        const errors: PreferenceAnswerErrors = {};
+
+        for (const interestId of selectedIds) {
+            if (!preferenceAnswers[interestId]?.trim()) {
+                errors[interestId] = '興味の詳細を入力してください';
+            }
+        }
+
+        return errors;
     }
 
     return (
@@ -130,26 +174,47 @@ export function OnboardingPage() {
                 <div className="form-section question-transition">
                     <div className="section-title">
                         <h2>興味の詳細</h2>
-                        <span>任意</span>
+                        <span>必須</span>
                     </div>
 
                     {interests
                         .filter((interest) => selectedIds.includes(interest.id))
-                        .map((interest) => (
-                            <label className="field" key={interest.id}>
-                                <span>{interest.detailQuestionJa}</span>
-                                <input
-                                    value={preferenceAnswers[interest.id] ?? ''}
-                                    onChange={(event) =>
-                                        updatePreferenceAnswer(
-                                            interest.id,
-                                            event.target.value,
-                                        )
-                                    }
-                                    placeholder={interest.detailPlaceholderJa}
-                                />
-                            </label>
-                        ))}
+                        .map((interest) => {
+                            const errorMessage = preferenceErrors[interest.id];
+                            const errorId = `interest-${interest.id}-error`;
+
+                            return (
+                                <label className="field" key={interest.id}>
+                                    <span>{interest.detailQuestionJa}</span>
+                                    <input
+                                        value={
+                                            preferenceAnswers[interest.id] ?? ''
+                                        }
+                                        onChange={(event) =>
+                                            updatePreferenceAnswer(
+                                                interest.id,
+                                                event.target.value,
+                                            )
+                                        }
+                                        placeholder={
+                                            interest.detailPlaceholderJa
+                                        }
+                                        aria-invalid={Boolean(errorMessage)}
+                                        aria-describedby={
+                                            errorMessage ? errorId : undefined
+                                        }
+                                    />
+                                    {errorMessage ? (
+                                        <p
+                                            id={errorId}
+                                            className="field-message"
+                                        >
+                                            {errorMessage}
+                                        </p>
+                                    ) : null}
+                                </label>
+                            );
+                        })}
                 </div>
             ) : null}
 

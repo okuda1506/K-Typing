@@ -10,3 +10,5 @@ export type OnboardingOptionsResponse = {
     interests: InterestOption[];
     maxSelections: number;
 };
+
+export type PreferenceAnswerErrors = Record<string, string>;

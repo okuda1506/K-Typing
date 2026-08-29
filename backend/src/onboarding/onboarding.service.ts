@@ -19,6 +19,11 @@ const interestOptionSelect = {
 export class OnboardingService {
     constructor(private readonly prisma: PrismaService) {}
 
+    /**
+     * 有効な興味選択肢と選択上限を取得する
+     *
+     * @returns オンボーディング選択肢
+     */
     async getOptions(): Promise<OnboardingOptionsResponse> {
         const interests = await this.prisma.interest.findMany({
             where: {
@@ -36,6 +41,14 @@ export class OnboardingService {
         };
     }
 
+    /**
+     * ログインユーザーの興味設定を保存する
+     *
+     * @param userId ログインユーザーID
+     * @param dto 選択した興味と詳細回答
+     * @returns 保存した興味設定
+     * @throws {BadRequestException} 存在しないまたは無効な興味が含まれる場合
+     */
     async saveInterests(
         userId: string,
         dto: SaveOnboardingInterestsDto,

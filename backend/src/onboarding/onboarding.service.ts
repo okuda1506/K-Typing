@@ -60,6 +60,14 @@ export class OnboardingService {
         }));
 
         return this.prisma.$transaction(async (transaction) => {
+            // 同一ユーザーの保存が同時実行されないようユーザー行をロックして後続処理を待機させる
+            await transaction.$queryRaw`
+                SELECT "id"
+                FROM "users"
+                WHERE "id" = ${userId}::uuid
+                FOR UPDATE
+            `;
+
             const activeInterests = await transaction.interest.findMany({
                 where: {
                     id: {

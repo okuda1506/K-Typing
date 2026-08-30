@@ -64,10 +64,11 @@ model UserProfile {
 }
 
 model UserInterest {
-  userId     String   @map("user_id") @db.Uuid
-  interestId String   @map("interest_id") @db.Uuid
-  weight     Int      @default(1)
-  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+  userId       String   @map("user_id") @db.Uuid
+  interestId   String   @map("interest_id") @db.Uuid
+  detailAnswer String   @map("detail_answer") @db.VarChar(255)
+  weight       Int      @default(1)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(3)
 
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   interest Interest @relation(fields: [interestId], references: [id], onDelete: Cascade)

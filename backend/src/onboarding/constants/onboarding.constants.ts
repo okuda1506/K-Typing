@@ -1,0 +1,3 @@
+export const MIN_INTEREST_SELECTIONS = 1;
+export const MAX_INTEREST_SELECTIONS = 3;
+export const MAX_DETAIL_ANSWER_LENGTH = 255;

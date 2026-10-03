@@ -6,6 +6,7 @@ import { OnboardingOptionsResponse } from './types/onboarding-options-response.t
 import { MAX_INTEREST_SELECTIONS } from './constants/onboarding.constants';
 import { SaveOnboardingInterestsDto } from './dto/save-onboarding-interests.dto';
 import { SaveOnboardingInterestsResponse } from './types/save-onboarding-interests-response.type';
+import { createFieldErrorResponse } from '../common/factories/field-error-response.factory';
 
 const interestOptionSelect = {
     id: true,
@@ -96,13 +97,17 @@ export class OnboardingService {
                 );
 
             if (invalidInterests.length > 0) {
-                throw new BadRequestException({
-                    message: 'Invalid interests',
-                    details: invalidInterests.map(({ index }) => ({
-                        field: `interests.${index}.interestId`,
-                        messages: ['Interest does not exist or is inactive'],
-                    })),
-                });
+                throw new BadRequestException(
+                    createFieldErrorResponse(
+                        'Invalid interests',
+                        invalidInterests.map(({ index }) => ({
+                            field: `interests.${index}.interestId`,
+                            messages: [
+                                'Interest does not exist or is inactive',
+                            ],
+                        })),
+                    ),
+                );
             }
 
             // ログインユーザーが以前登録した興味を全て削除する

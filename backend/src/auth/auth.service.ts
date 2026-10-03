@@ -15,12 +15,7 @@ import { JwtPayload } from './types/jwt-payload.type';
 import { UsersService } from '../users/users.service';
 import { PublicUser } from '../users/types/public-user.type';
 import { UserWithPassword } from '../users/types/user-with-password.type';
-import { FieldError } from '../common/types/field-error.type';
-
-type FieldErrorExceptionResponse = {
-    message: string;
-    details: FieldError[];
-};
+import { createFieldErrorResponse } from '../common/factories/field-error-response.factory';
 
 @Injectable()
 export class AuthService {
@@ -35,20 +30,22 @@ export class AuthService {
         const email = dto.email.trim().toLowerCase();
 
         if (!displayName) {
+            const message = 'Display name is required';
+
             throw new BadRequestException(
-                this.buildFieldErrorResponse(
-                    'displayName',
-                    'Display name is required',
-                ),
+                createFieldErrorResponse(message, {
+                    field: 'displayName',
+                    messages: [message],
+                }),
             );
         }
 
         if (dto.password !== dto.confirmPassword) {
             throw new BadRequestException(
-                this.buildFieldErrorResponse(
-                    'confirmPassword',
-                    'Passwords do not match',
-                ),
+                createFieldErrorResponse('Passwords do not match', {
+                    field: 'confirmPassword',
+                    messages: ['Passwords do not match'],
+                }),
             );
         }
 
@@ -56,10 +53,10 @@ export class AuthService {
 
         if (existingUser) {
             throw new ConflictException(
-                this.buildFieldErrorResponse(
-                    'email',
-                    'Email is already in use',
-                ),
+                createFieldErrorResponse('Email is already in use', {
+                    field: 'email',
+                    messages: ['Email is already in use'],
+                }),
             );
         }
 
@@ -126,21 +123,6 @@ export class AuthService {
             email: user.email,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
-        };
-    }
-
-    private buildFieldErrorResponse(
-        field: string,
-        message: string,
-    ): FieldErrorExceptionResponse {
-        return {
-            message,
-            details: [
-                {
-                    field,
-                    messages: [message],
-                },
-            ],
         };
     }
 }

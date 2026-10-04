@@ -12,3 +12,17 @@ export type OnboardingOptionsResponse = {
 };
 
 export type PreferenceAnswerErrors = Record<string, string>;
+
+export type SaveOnboardingInterestsRequest = {
+    interests: {
+        interestId: string;
+        detailAnswer: string;
+    }[];
+};
+
+export type SaveOnboardingInterestsResponse = {
+    interests: {
+        interestId: string;
+        detailAnswer: string;
+    }[];
+};

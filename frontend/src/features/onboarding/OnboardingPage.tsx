@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
-import { getOnboardingOptions } from './onboardingApi';
+import { getOnboardingOptions, saveOnboardingInterests } from './onboardingApi';
 
 import type {
     OnboardingOptionsResponse,
@@ -19,6 +19,7 @@ export function OnboardingPage() {
     >({});
     const [isLoading, setIsLoading] = useState(true);
     const [loadError, setLoadError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [preferenceErrors, setPreferenceErrors] =
         useState<PreferenceAnswerErrors>({});
     const interests = options?.interests ?? [];
@@ -31,6 +32,9 @@ export function OnboardingPage() {
     useEffect(() => {
         let isCancelled = false;
 
+        /**
+         * 興味選択肢を取得して画面表示中の場合だけ取得結果を反映する
+         */
         async function loadOptions() {
             try {
                 const response = await getOnboardingOptions();
@@ -57,6 +61,9 @@ export function OnboardingPage() {
         };
     }, []);
 
+    /**
+     * 選択上限を守って興味の選択・解除を切り替える
+     */
     function toggleInterest(id: string) {
         if (selectedIds.includes(id)) {
             clearPreferenceError(id);
@@ -75,6 +82,9 @@ export function OnboardingPage() {
         });
     }
 
+    /**
+     * 詳細回答を更新して該当する入力エラーを解除する
+     */
     function updatePreferenceAnswer(interestId: string, value: string) {
         setPreferenceAnswers((current) => ({
             ...current,
@@ -84,22 +94,48 @@ export function OnboardingPage() {
         clearPreferenceError(interestId);
     }
 
-    function handleSubmit() {
-        if (selectedIds.length === 0) {
+    /**
+     * 入力検証して興味設定の保存成功後にホームへ遷移する
+     */
+    async function handleSubmit(): Promise<void> {
+        if (
+            isSubmitting ||
+            isLoading ||
+            loadError ||
+            selectedIds.length === 0
+        ) {
             return;
         }
 
         const validationErrors = validatePreferenceAnswers();
+        setPreferenceErrors(validationErrors);
 
         if (Object.keys(validationErrors).length > 0) {
-            setPreferenceErrors(validationErrors);
             return;
         }
 
-        setPreferenceErrors({});
-        navigate('/');
+        setIsSubmitting(true);
+
+        try {
+            await saveOnboardingInterests({
+                interests: selectedIds.map((interestId) => ({
+                    interestId,
+                    detailAnswer: (preferenceAnswers[interestId] ?? '').trim(),
+                })),
+            });
+        } catch {
+            toast.error('興味設定の保存に失敗しました');
+            setIsSubmitting(false);
+            return;
+        }
+
+        setIsSubmitting(false);
+        navigate('/', { replace: true });
     }
 
+    /**
+     * 指定した興味の入力エラーだけを解除する
+     */
     function clearPreferenceError(interestId: string) {
         setPreferenceErrors((currentErrors) => {
             if (!currentErrors[interestId]) {
@@ -113,6 +149,9 @@ export function OnboardingPage() {
         });
     }
 
+    /**
+     * 選択した興味の詳細回答が空でないかを検証して項目別エラーを返す
+     */
     function validatePreferenceAnswers(): PreferenceAnswerErrors {
         const errors: PreferenceAnswerErrors = {};
 
@@ -160,6 +199,7 @@ export function OnboardingPage() {
                                         selected ? 'chip selected' : 'chip'
                                     }
                                     aria-pressed={selected}
+                                    disabled={isSubmitting}
                                     onClick={() => toggleInterest(interest.id)}
                                 >
                                     {interest.labelJa}
@@ -187,6 +227,7 @@ export function OnboardingPage() {
                                 <label className="field" key={interest.id}>
                                     <span>{interest.detailQuestionJa}</span>
                                     <input
+                                        disabled={isSubmitting}
                                         value={
                                             preferenceAnswers[interest.id] ?? ''
                                         }
@@ -221,13 +262,16 @@ export function OnboardingPage() {
             <button
                 type="button"
                 className="primary-button reveal-delay-3"
-                onClick={handleSubmit}
+                onClick={() => void handleSubmit()}
                 disabled={
-                    isLoading || Boolean(loadError) || selectedIds.length === 0
+                    isLoading ||
+                    Boolean(loadError) ||
+                    selectedIds.length === 0 ||
+                    isSubmitting
                 }
                 data-reveal
             >
-                学習を始める
+                {isSubmitting ? '保存中...' : '学習を始める'}
             </button>
         </section>
     );

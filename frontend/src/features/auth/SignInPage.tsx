@@ -9,6 +9,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { ApiError } from '@/lib/apiClient';
+import { PasswordInput } from './PasswordInput';
 import { signIn } from './authApi';
 import type { SignInForm, SignInFormErrors } from './types';
 import { saveAuthSession } from './authSession';
@@ -159,9 +160,12 @@ export function SignInPage() {
                                 ) : null}
                             </label>
 
-                            <label className="field auth-field">
-                                <span>パスワード</span>
-                                <input
+                            <div className="field auth-field">
+                                <label htmlFor="signin-password">
+                                    パスワード
+                                </label>
+                                <PasswordInput
+                                    id="signin-password"
                                     value={form.password}
                                     onChange={(event) =>
                                         updateField(
@@ -169,7 +173,6 @@ export function SignInPage() {
                                             event.target.value,
                                         )
                                     }
-                                    type="password"
                                     autoComplete="current-password"
                                     placeholder="パスワード"
                                     aria-invalid={Boolean(formErrors.password)}
@@ -187,7 +190,7 @@ export function SignInPage() {
                                         {formErrors.password}
                                     </p>
                                 ) : null}
-                            </label>
+                            </div>
                         </CardContent>
 
                         <CardFooter className="flex-col items-stretch border-t-0 bg-transparent">

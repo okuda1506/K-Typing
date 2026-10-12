@@ -23,6 +23,7 @@ model User {
 
   profile                  UserProfile?
   interests                UserInterest[]
+  levelProgresses          UserLevelProgress[]
   typingSessions           TypingSession[]
   lessonProgresses         LessonProgress[]
   generatedQuestionBatches GeneratedQuestionBatch[]
@@ -43,6 +44,8 @@ model Interest {
 
   users                    UserInterest[]
   questions                QuestionInterest[]
+  levelProgresses          UserLevelProgress[]
+  lessonProgresses         LessonProgress[]
   generatedQuestionBatches GeneratedQuestionBatch[]
 
   @@map("interests")
@@ -51,6 +54,7 @@ model Interest {
 model UserProfile {
   id                 String   @id @default(uuid()) @db.Uuid
   userId             String   @unique @map("user_id") @db.Uuid
+  // 互換性のため残す旧項目。PoCではジャンル別の進捗と詳細回答を使う
   level              String   @default("beginner") @db.VarChar(30)
   favoritePerson     String?  @map("favorite_person") @db.VarChar(100)
   nativeLanguage     String   @default("ja") @map("native_language") @db.VarChar(20)
@@ -78,18 +82,43 @@ model UserInterest {
 }
 
 model Level {
-  id          String   @id @default(uuid()) @db.Uuid
-  code        String   @unique @db.VarChar(30)
-  title       String   @db.VarChar(100)
-  orderNo     Int      @default(0) @map("order_no")
-  difficulty  String   @default("beginner") @db.VarChar(30)
-  description String?  @db.Text
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(3)
-  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
+  id               String   @id @default(uuid()) @db.Uuid
+  code             String   @unique @db.VarChar(30)
+  title            String   @db.VarChar(100)
+  orderNo          Int      @default(0) @map("order_no")
+  difficulty       String   @default("beginner") @db.VarChar(30)
+  description      String?  @db.Text
+  requiredAccuracy Decimal  @default(80.00) @map("required_accuracy") @db.Decimal(5, 2)
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
 
-  lessons Lesson[]
+  lessons        Lesson[]
+  userProgresses UserLevelProgress[]
 
   @@map("levels")
+}
+
+/// ユーザー・ジャンルごとに各級の進捗を管理する
+model UserLevelProgress {
+  userId                   String    @map("user_id") @db.Uuid
+  interestId               String    @map("interest_id") @db.Uuid
+  levelId                  String    @map("level_id") @db.Uuid
+  unlockedAt               DateTime  @map("unlocked_at") @db.Timestamp(3)
+  startedAt                DateTime? @map("started_at") @db.Timestamp(3)
+  completedAt              DateTime? @map("completed_at") @db.Timestamp(3)
+  passedAt                 DateTime? @map("passed_at") @db.Timestamp(3)
+  // 級の開始時に両方の値を保存し、興味設定が変わっても保持する。
+  detailAnswerSnapshot     String?   @map("detail_answer_snapshot") @db.VarChar(255)
+  requiredAccuracySnapshot Decimal?  @map("required_accuracy_snapshot") @db.Decimal(5, 2)
+  createdAt                DateTime  @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt                DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interest Interest @relation(fields: [interestId], references: [id], onDelete: Restrict)
+  level    Level    @relation(fields: [levelId], references: [id], onDelete: Restrict)
+
+  @@id([userId, interestId, levelId])
+  @@map("user_level_progress")
 }
 
 model Lesson {
@@ -98,16 +127,20 @@ model Lesson {
   title            String   @db.VarChar(120)
   themeType        String   @default("default") @map("theme_type") @db.VarChar(50)
   orderNo          Int      @default(0) @map("order_no")
+  questionCount    Int      @default(10) @map("question_count")
+  // 互換性のため残す旧基準。PoCの合否判定にはLevel.requiredAccuracyを使う。
   requiredAccuracy Decimal  @default(80.00) @map("required_accuracy") @db.Decimal(5, 2)
   isActive         Boolean  @default(true) @map("is_active")
   createdAt        DateTime @default(now()) @map("created_at") @db.Timestamp(3)
   updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
 
-  level            Level            @relation(fields: [levelId], references: [id], onDelete: Cascade)
-  questions        Question[]
-  typingSessions   TypingSession[]
-  lessonProgresses LessonProgress[]
+  level                    Level                    @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  questions                Question[]
+  typingSessions           TypingSession[]
+  lessonProgresses         LessonProgress[]
+  generatedQuestionBatches GeneratedQuestionBatch[]
 
+  @@unique([levelId, orderNo])
   @@map("lessons")
 }
 
@@ -120,6 +153,7 @@ model Question {
   sourceType       String   @default("seed") @map("source_type") @db.VarChar(30)
   status           String   @default("published") @db.VarChar(30)
   generatedBatchId String?  @map("generated_batch_id") @db.Uuid
+  orderNo          Int      @map("order_no")
   createdAt        DateTime @default(now()) @map("created_at") @db.Timestamp(3)
   updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
 
@@ -130,6 +164,7 @@ model Question {
   typingAttempts TypingAttempt[]
   audioAssets    AudioAsset[]
 
+  @@unique([generatedBatchId, orderNo])
   @@map("questions")
 }
 
@@ -162,19 +197,24 @@ model VocabItem {
 }
 
 model TypingSession {
-  id          String    @id @default(uuid()) @db.Uuid
-  userId      String    @map("user_id") @db.Uuid
-  lessonId    String    @map("lesson_id") @db.Uuid
-  startedAt   DateTime  @default(now()) @map("started_at") @db.Timestamp(3)
-  completedAt DateTime? @map("completed_at") @db.Timestamp(3)
-  totalMs     Int?      @map("total_ms")
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamp(3)
-  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
+  id               String    @id @default(uuid()) @db.Uuid
+  userId           String    @map("user_id") @db.Uuid
+  lessonId         String    @map("lesson_id") @db.Uuid
+  generatedBatchId String    @map("generated_batch_id") @db.Uuid
+  startedAt        DateTime  @default(now()) @map("started_at") @db.Timestamp(3)
+  completedAt      DateTime? @map("completed_at") @db.Timestamp(3)
+  sessionAccuracy  Decimal?  @map("session_accuracy") @db.Decimal(6, 3)
+  scoringVersion   String    @default("levenshtein-nfc-v1") @map("scoring_version") @db.VarChar(50)
+  totalMs          Int?      @map("total_ms")
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt        DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
 
-  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  lesson   Lesson          @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  attempts TypingAttempt[]
+  user           User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson         Lesson                 @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  generatedBatch GeneratedQuestionBatch @relation(fields: [generatedBatchId], references: [id], onDelete: Restrict)
+  attempts       TypingAttempt[]
 
+  // SQLの部分一意制約で、同じユーザー・バッチの未完了セッションを1件に制限する。
   @@map("typing_sessions")
 }
 
@@ -186,6 +226,7 @@ model TypingAttempt {
   isCorrect    Boolean  @default(false) @map("is_correct")
   accuracy     Decimal  @default(0.00) @db.Decimal(5, 2)
   elapsedMs    Int      @default(0) @map("elapsed_ms")
+  // 入力途中のミス回数ではなく、確定回答と正解の編集距離を保存する。
   mistakeCount Int      @default(0) @map("mistake_count")
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(3)
   updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
@@ -194,6 +235,7 @@ model TypingAttempt {
   question Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
   mistakes TypingMistake[]
 
+  @@unique([sessionId, questionId])
   @@map("typing_attempts")
 }
 
@@ -212,39 +254,51 @@ model TypingMistake {
 }
 
 model LessonProgress {
-  userId       String    @map("user_id") @db.Uuid
-  lessonId     String    @map("lesson_id") @db.Uuid
-  clearedAt    DateTime? @map("cleared_at") @db.Timestamp(3)
-  bestAccuracy Decimal   @default(0.00) @map("best_accuracy") @db.Decimal(5, 2)
-  bestWpm      Decimal   @default(0.00) @map("best_wpm") @db.Decimal(6, 2)
-  clearCount   Int       @default(0) @map("clear_count")
-  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamp(3)
-  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
+  userId           String    @map("user_id") @db.Uuid
+  interestId       String    @map("interest_id") @db.Uuid
+  lessonId         String    @map("lesson_id") @db.Uuid
+  generatedBatchId String?   @map("generated_batch_id") @db.Uuid
+  startedAt        DateTime? @map("started_at") @db.Timestamp(3)
+  // SQLでcleared_at・clear_countを改名し、既存の日時・回数を引き継ぐ。
+  completedAt      DateTime? @map("completed_at") @db.Timestamp(3)
+  bestAccuracy     Decimal   @default(0.000) @map("best_accuracy") @db.Decimal(6, 3)
+  bestWpm          Decimal   @default(0.00) @map("best_wpm") @db.Decimal(6, 2)
+  completedCount   Int       @default(0) @map("completed_count")
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt        DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  user           User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interest       Interest                @relation(fields: [interestId], references: [id], onDelete: Restrict)
+  lesson         Lesson                  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  generatedBatch GeneratedQuestionBatch? @relation(fields: [generatedBatchId], references: [id], onDelete: Restrict)
 
-  @@id([userId, lessonId])
+  @@id([userId, interestId, lessonId])
   @@map("lesson_progress")
 }
 
 model GeneratedQuestionBatch {
-  id             String   @id @default(uuid()) @db.Uuid
-  userId         String   @map("user_id") @db.Uuid
-  interestId     String?  @map("interest_id") @db.Uuid
-  prompt         String   @db.Text
-  model          String   @db.VarChar(100)
-  status         String   @default("pending") @db.VarChar(30)
-  generatedCount Int      @default(0) @map("generated_count")
-  rawResponse    Json?    @map("raw_response") @db.JsonB
-  errorMessage   String?  @map("error_message") @db.Text
-  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamp(3)
-  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
+  id                   String   @id @default(uuid()) @db.Uuid
+  userId               String   @map("user_id") @db.Uuid
+  interestId           String   @map("interest_id") @db.Uuid
+  lessonId             String   @map("lesson_id") @db.Uuid
+  detailAnswerSnapshot String   @map("detail_answer_snapshot") @db.VarChar(255)
+  prompt               String   @db.Text
+  model                String   @db.VarChar(100)
+  status               String   @default("pending") @db.VarChar(30)
+  generatedCount       Int      @default(0) @map("generated_count")
+  rawResponse          Json?    @map("raw_response") @db.JsonB
+  errorMessage         String?  @map("error_message") @db.Text
+  createdAt            DateTime @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt            DateTime @updatedAt @map("updated_at") @db.Timestamp(3)
 
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  interest  Interest?  @relation(fields: [interestId], references: [id], onDelete: SetNull)
-  questions Question[]
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interest         Interest         @relation(fields: [interestId], references: [id], onDelete: Restrict)
+  lesson           Lesson           @relation(fields: [lessonId], references: [id], onDelete: Restrict)
+  questions        Question[]
+  lessonProgresses LessonProgress[]
+  typingSessions   TypingSession[]
 
+  // SQLの部分一意制約で、同じユーザー・ジャンル・レッスンの成功バッチを1件に制限する。
   @@map("generated_question_batches")
 }
 

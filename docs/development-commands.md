@@ -42,6 +42,7 @@ CIはNode.js 22を使用している。Node.jsのバージョンに起因する�
 | デバッグポート付きで開発サーバーを起動 | `npm run start:debug` | なし |
 | 本番用にコンパイル | `npm run build` | なし |
 | Jestテストを実行 | `npm run test` | なし |
+| マスタseedのユニットテストを実行 | `npm run test:seed` | DBへの接続・変更なし |
 | Jestをwatchモードで実行 | `npm run test:watch` | なし |
 | テストカバレッジを出力 | `npm run test:cov` | `coverage/` を生成 |
 | E2Eテストを実行 | `npm run test:e2e` | なし |
@@ -60,6 +61,7 @@ CIはNode.js 22を使用している。Node.jsのバージョンに起因する�
 | Prisma Clientを生成 | `npx prisma generate` | schema変更後や依存導入後に実行する |
 | 開発DBへマイグレーションを作成・適用 | `npx prisma migrate dev --name <migration-name>` | `schema.prisma`変更後に使う |
 | マイグレーション適用状況を確認 | `npx prisma migrate status` | DB変更は行わない |
+| 興味・級・レッスンのマスタを登録・更新 | `npx prisma db seed` | [内容と確認手順](poc-learning-master-seed.md)を参照 |
 | DBのGUIを起動 | `npx prisma studio` | 通常はDBeaverを使う場合は不要 |
 
 ## PR前の基本確認
@@ -75,6 +77,7 @@ npm run build
 # backend/
 npm run lint
 npm run test
+npm run test:seed
 npm run build
 ```
 

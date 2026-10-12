@@ -9,6 +9,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { ApiError } from '@/lib/apiClient';
+import { PasswordInput } from './PasswordInput';
 import { signUp } from './authApi';
 import type { SignUpForm, SignUpFormErrors } from './types';
 import { saveAuthSession } from './authSession';
@@ -205,9 +206,12 @@ export function SignUpPage() {
                                 ) : null}
                             </label>
 
-                            <label className="field auth-field">
-                                <span>パスワード</span>
-                                <input
+                            <div className="field auth-field">
+                                <label htmlFor="signup-password">
+                                    パスワード
+                                </label>
+                                <PasswordInput
+                                    id="signup-password"
                                     value={form.password}
                                     onChange={(event) =>
                                         updateField(
@@ -215,7 +219,6 @@ export function SignUpPage() {
                                             event.target.value,
                                         )
                                     }
-                                    type="password"
                                     autoComplete="new-password"
                                     placeholder="8文字以上"
                                     aria-invalid={Boolean(formErrors.password)}
@@ -233,11 +236,15 @@ export function SignUpPage() {
                                         {formErrors.password}
                                     </p>
                                 ) : null}
-                            </label>
+                            </div>
 
-                            <label className="field auth-field">
-                                <span>パスワード確認</span>
-                                <input
+                            <div className="field auth-field">
+                                <label htmlFor="signup-confirm-password">
+                                    パスワード確認
+                                </label>
+                                <PasswordInput
+                                    id="signup-confirm-password"
+                                    visibilityLabel="確認用パスワード"
                                     value={form.confirmPassword}
                                     onChange={(event) =>
                                         updateField(
@@ -245,7 +252,6 @@ export function SignUpPage() {
                                             event.target.value,
                                         )
                                     }
-                                    type="password"
                                     autoComplete="new-password"
                                     placeholder="もう一度入力"
                                     aria-invalid={Boolean(
@@ -265,7 +271,7 @@ export function SignUpPage() {
                                         {formErrors.confirmPassword}
                                     </p>
                                 ) : null}
-                            </label>
+                            </div>
                         </CardContent>
 
                         <CardFooter className="flex-col items-stretch border-t-0 bg-transparent">

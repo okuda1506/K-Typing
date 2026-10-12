@@ -547,7 +547,8 @@ a {
   border-bottom: 1px solid var(--line);
 }
 
-.field span {
+.field span,
+.field > label {
   color: var(--muted-text);
   font-size: 11px;
   font-weight: 600;
@@ -623,6 +624,25 @@ a {
 
 .auth-field input::placeholder {
   color: var(--quiet);
+}
+
+.password-input {
+  position: relative;
+  min-width: 0;
+}
+
+.field .password-input input {
+  padding-right: 58px;
+}
+
+.password-visibility-toggle {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 40px;
+  height: 40px;
+  color: var(--muted-text);
+  border-radius: 6px;
 }
 
 .auth-toast {

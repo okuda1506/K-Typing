@@ -11,6 +11,7 @@ import {
 } from './constants/learning.constants';
 import type { SelectedInterest } from './types/selected-interest.type';
 import type { LearningMaster } from './types/learning-master.type';
+import type { LearningProgress } from './types/learning-progress.type';
 
 /** 学習構成とユーザー進捗の取得・整形を行う */
 @Injectable()
@@ -115,5 +116,43 @@ export class LearningService {
         }
 
         return levels;
+    }
+
+    /**
+     * 本人の選択ジャンルに対応する級・レッスン進捗を取得する
+     *
+     * @param userId ログインユーザーID
+     * @param interestIds 選択した興味IDの配列
+     * @param masters PoC対象の級・レッスンマスタ
+     * @returns 級進捗とレッスン進捗。未登録の場合はそれぞれ空配列
+     */
+    private async getLearningProgress(
+        userId: string,
+        interestIds: string[],
+        masters: LearningMaster[],
+    ): Promise<LearningProgress> {
+        const levelIds = masters.map((level) => level.id);
+        const lessonIds = masters.flatMap((level) =>
+            level.lessons.map((lesson) => lesson.id),
+        );
+
+        const [levelProgresses, lessonProgresses] = await Promise.all([
+            this.prisma.userLevelProgress.findMany({
+                where: {
+                    userId,
+                    interestId: { in: interestIds },
+                    levelId: { in: levelIds },
+                },
+            }),
+            this.prisma.lessonProgress.findMany({
+                where: {
+                    userId,
+                    interestId: { in: interestIds },
+                    lessonId: { in: lessonIds },
+                },
+            }),
+        ]);
+
+        return { levelProgresses, lessonProgresses };
     }
 }

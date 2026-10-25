@@ -12,6 +12,8 @@ import {
 import type { SelectedInterest } from './types/selected-interest.type';
 import type { LearningMaster } from './types/learning-master.type';
 import type { LearningProgress } from './types/learning-progress.type';
+import type { LessonProgress } from '@prisma/client';
+import type { LessonStatus } from './types/lesson-status.type';
 
 /** 学習構成とユーザー進捗の取得・整形を行う */
 @Injectable()
@@ -154,5 +156,35 @@ export class LearningService {
         ]);
 
         return { levelProgresses, lessonProgresses };
+    }
+
+    /**
+     * レッスン進捗と級の解放状態から表示状態を判定する
+     *
+     * @param progress 対象レッスンの進捗
+     * @param isUnlocked 級が解放済みか
+     * @param isFirstLesson 級内の最初のレッスンか
+     * @param previousProgress 同じジャンルの直前レッスンの進捗
+     * @returns レッスンの表示状態
+     */
+    private getLessonStatus(
+        progress: LessonProgress | undefined,
+        isUnlocked: boolean,
+        isFirstLesson: boolean,
+        previousProgress: LessonProgress | undefined,
+    ): LessonStatus {
+        if (progress?.completedAt) {
+            return 'completed';
+        }
+
+        if (progress?.startedAt) {
+            return 'in_progress';
+        }
+
+        if (isUnlocked && (isFirstLesson || previousProgress?.completedAt)) {
+            return 'available';
+        }
+
+        return 'locked';
     }
 }

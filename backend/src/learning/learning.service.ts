@@ -14,6 +14,7 @@ import type { LearningMaster } from './types/learning-master.type';
 import type { LearningProgress } from './types/learning-progress.type';
 import type { LessonProgress } from '@prisma/client';
 import type { LessonStatus } from './types/lesson-status.type';
+import type { LearningLesson } from './types/learning-lesson.type';
 
 /** 学習構成とユーザー進捗の取得・整形を行う */
 @Injectable()
@@ -186,5 +187,62 @@ export class LearningService {
         }
 
         return 'locked';
+    }
+
+    /**
+     * 対象ジャンルのレッスン情報をAPI返却用に整形する
+     *
+     * @param master 対象の級・レッスンマスタ
+     * @param interestId 対象の興味ID
+     * @param isUnlocked 級が解放済みか
+     * @param lessonProgresses 本人のレッスン進捗一覧
+     * @returns 状態・日時・最高成績を含むレッスン一覧
+     */
+    private buildLearningLessons(
+        master: LearningMaster,
+        interestId: string,
+        isUnlocked: boolean,
+        lessonProgresses: LessonProgress[],
+    ): LearningLesson[] {
+        // 対象ジャンルの進捗だけを、レッスンIDで取り出せるようにする
+        const progressByLessonId = new Map(
+            lessonProgresses
+                .filter((progress) => progress.interestId === interestId)
+                .map((progress) => [progress.lessonId, progress]),
+        );
+
+        return master.lessons.map((lesson, index) => {
+            // 対応する進捗がMapに存在しなければundefined
+            const progress = progressByLessonId.get(lesson.id);
+
+            // 直前のレッスンの進捗を取得する(最初のレッスンはundefined)
+            const previousLesson = master.lessons[index - 1];
+            const previousProgress = previousLesson
+                ? progressByLessonId.get(previousLesson.id)
+                : undefined;
+
+            return {
+                id: lesson.id,
+                title: lesson.title,
+                themeType: lesson.themeType,
+                orderNo: lesson.orderNo,
+                questionCount: lesson.questionCount,
+                status: this.getLessonStatus(
+                    progress,
+                    isUnlocked,
+                    index === 0,
+                    previousProgress,
+                ),
+                // 日時をISO文字列に変換、未登録の日時・完了回数はnull・0で返す
+                startedAt: progress?.startedAt?.toISOString() ?? null,
+                completedAt: progress?.completedAt?.toISOString() ?? null,
+                completedCount: progress?.completedCount ?? 0,
+                // 完了済みの最高成績だけを数値化して未完了と0%を区別する
+                bestAccuracy:
+                    progress && progress.completedCount > 0
+                        ? progress.bestAccuracy.toNumber()
+                        : null,
+            };
+        });
     }
 }

@@ -286,6 +286,7 @@ export class LearningService {
                 lesson.bestAccuracy === null ? [] : [lesson.bestAccuracy],
             );
 
+            // 全レッスンの最高正確率が揃っていたら平均を算出
             const overallAccuracy =
                 scores.length === LESSONS_PER_LEVEL
                     ? Prisma.Decimal.sum(...scores)

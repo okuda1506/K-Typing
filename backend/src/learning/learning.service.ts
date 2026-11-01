@@ -4,6 +4,7 @@ import {
     NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 import {
     LEARNING_LEVEL_CODES,
     LESSONS_PER_LEVEL,
@@ -15,6 +16,7 @@ import type { LearningProgress } from './types/learning-progress.type';
 import type { LessonProgress } from '@prisma/client';
 import type { LessonStatus } from './types/lesson-status.type';
 import type { LearningLesson } from './types/learning-lesson.type';
+import type { LearningLevel } from './types/learning-level.type';
 
 /** 学習構成とユーザー進捗の取得・整形を行う */
 @Injectable()
@@ -242,6 +244,76 @@ export class LearningService {
                     progress && progress.completedCount > 0
                         ? progress.bestAccuracy.toNumber()
                         : null,
+            };
+        });
+    }
+
+    /**
+     * 対象ジャンルの級情報と進捗をAPI返却用に整形する
+     *
+     * @param masters 級・レッスンのマスタ一覧
+     * @param interestId 対象の興味ID
+     * @param progress 本人の級・レッスン進捗
+     * @returns 進捗付きの級一覧
+     */
+    private buildLearningLevels(
+        masters: LearningMaster[],
+        interestId: string,
+        progress: LearningProgress,
+    ): LearningLevel[] {
+        return masters.map((master) => {
+            const levelProgress = progress.levelProgresses.find(
+                (item) =>
+                    item.interestId === interestId &&
+                    item.levelId === master.id,
+            );
+
+            const isUnlocked =
+                master.code === LEARNING_LEVEL_CODES[0] || // 初級は解放済みとして扱う
+                Boolean(levelProgress?.unlockedAt);
+
+            const lessons = this.buildLearningLessons(
+                master,
+                interestId,
+                isUnlocked,
+                progress.lessonProgresses,
+            );
+
+            const completedLessons = lessons.filter(
+                (lesson) => lesson.completedAt !== null,
+            );
+            const scores = completedLessons.flatMap((lesson) =>
+                lesson.bestAccuracy === null ? [] : [lesson.bestAccuracy],
+            );
+
+            const overallAccuracy =
+                scores.length === LESSONS_PER_LEVEL
+                    ? Prisma.Decimal.sum(...scores)
+                          .div(LESSONS_PER_LEVEL)
+                          .toDecimalPlaces(4)
+                          .toNumber()
+                    : null;
+
+            return {
+                id: master.id,
+                code: master.code,
+                title: master.title,
+                orderNo: master.orderNo,
+                requiredAccuracy: (
+                    levelProgress?.requiredAccuracySnapshot ??
+                    master.requiredAccuracy
+                ).toNumber(),
+                isUnlocked,
+                unlockedAt: levelProgress
+                    ? levelProgress.unlockedAt.toISOString()
+                    : null,
+                startedAt: levelProgress?.startedAt?.toISOString() ?? null,
+                completedAt: levelProgress?.completedAt?.toISOString() ?? null,
+                passedAt: levelProgress?.passedAt?.toISOString() ?? null,
+                completedLessonCount: completedLessons.length,
+                lessonCount: lessons.length,
+                overallAccuracy,
+                lessons,
             };
         });
     }

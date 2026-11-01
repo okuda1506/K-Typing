@@ -11,4 +11,5 @@ export type LearningLesson = {
     completedAt: string | null;
     completedCount: number;
     bestAccuracy: number | null; // 未完了のnullと完了した0%を区別する
+    isPassed: boolean; // 完了済みの最高正確率が、その級の合格基準以上か
 };

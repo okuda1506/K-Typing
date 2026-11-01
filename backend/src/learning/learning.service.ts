@@ -4,7 +4,6 @@ import {
     NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma } from '@prisma/client';
 import {
     LEARNING_LEVEL_CODES,
     LESSONS_PER_LEVEL,
@@ -13,7 +12,7 @@ import {
 import type { SelectedInterest } from './types/selected-interest.type';
 import type { LearningMaster } from './types/learning-master.type';
 import type { LearningProgress } from './types/learning-progress.type';
-import type { LessonProgress } from '@prisma/client';
+import type { LessonProgress, Prisma } from '@prisma/client';
 import type { LessonStatus } from './types/lesson-status.type';
 import type { LearningLesson } from './types/learning-lesson.type';
 import type { LearningLevel } from './types/learning-level.type';
@@ -197,16 +196,18 @@ export class LearningService {
      * @param master 対象の級・レッスンマスタ
      * @param interestId 対象の興味ID
      * @param isUnlocked 級が解放済みか
+     * @param requiredAccuracy 対象の級の各レッスンに適用する合格基準
      * @param lessonProgresses 本人のレッスン進捗一覧
-     * @returns 状態・日時・最高成績を含むレッスン一覧
+     * @returns 状態・合否・日時・最高成績を含むレッスン一覧
      */
     private buildLearningLessons(
         master: LearningMaster,
         interestId: string,
         isUnlocked: boolean,
+        requiredAccuracy: Prisma.Decimal,
         lessonProgresses: LessonProgress[],
     ): LearningLesson[] {
-        // 対象ジャンルの進捗だけを、レッスンIDで取り出せるようにする
+        // 対象ジャンルの進捗だけをレッスンIDで取り出せるようにする
         const progressByLessonId = new Map(
             lessonProgresses
                 .filter((progress) => progress.interestId === interestId)
@@ -214,7 +215,6 @@ export class LearningService {
         );
 
         return master.lessons.map((lesson, index) => {
-            // 対応する進捗がMapに存在しなければundefined
             const progress = progressByLessonId.get(lesson.id);
 
             // 直前のレッスンの進捗を取得する(最初のレッスンはundefined)
@@ -244,6 +244,14 @@ export class LearningService {
                     progress && progress.completedCount > 0
                         ? progress.bestAccuracy.toNumber()
                         : null,
+                // 各レッスンの完了済み最高成績を合格基準と比較する
+                isPassed:
+                    progress !== undefined &&
+                    progress.completedAt !== null &&
+                    progress.completedCount > 0 &&
+                    progress.bestAccuracy.greaterThanOrEqualTo(
+                        requiredAccuracy,
+                    ),
             };
         });
     }
@@ -272,38 +280,32 @@ export class LearningService {
                 master.code === LEARNING_LEVEL_CODES[0] || // 初級は解放済みとして扱う
                 Boolean(levelProgress?.unlockedAt);
 
+            const requiredAccuracy =
+                levelProgress?.requiredAccuracySnapshot ??
+                master.requiredAccuracy;
+
             const lessons = this.buildLearningLessons(
                 master,
                 interestId,
                 isUnlocked,
+                requiredAccuracy,
                 progress.lessonProgresses,
             );
 
             const completedLessons = lessons.filter(
                 (lesson) => lesson.completedAt !== null,
             );
-            const scores = completedLessons.flatMap((lesson) =>
-                lesson.bestAccuracy === null ? [] : [lesson.bestAccuracy],
-            );
-
-            // 全レッスンの最高正確率が揃っていたら平均を算出
-            const overallAccuracy =
-                scores.length === LESSONS_PER_LEVEL
-                    ? Prisma.Decimal.sum(...scores)
-                          .div(LESSONS_PER_LEVEL)
-                          .toDecimalPlaces(4)
-                          .toNumber()
-                    : null;
+            // 各レッスンで合格基準を満たした件数を返す
+            const passedLessonCount = lessons.filter(
+                (lesson) => lesson.isPassed,
+            ).length;
 
             return {
                 id: master.id,
                 code: master.code,
                 title: master.title,
                 orderNo: master.orderNo,
-                requiredAccuracy: (
-                    levelProgress?.requiredAccuracySnapshot ??
-                    master.requiredAccuracy
-                ).toNumber(),
+                requiredAccuracy: requiredAccuracy.toNumber(),
                 isUnlocked,
                 unlockedAt: levelProgress
                     ? levelProgress.unlockedAt.toISOString()
@@ -312,8 +314,8 @@ export class LearningService {
                 completedAt: levelProgress?.completedAt?.toISOString() ?? null,
                 passedAt: levelProgress?.passedAt?.toISOString() ?? null,
                 completedLessonCount: completedLessons.length,
+                passedLessonCount,
                 lessonCount: lessons.length,
-                overallAccuracy,
                 lessons,
             };
         });

@@ -16,6 +16,7 @@ import type { LessonProgress, Prisma } from '@prisma/client';
 import type { LessonStatus } from './types/lesson-status.type';
 import type { LearningLesson } from './types/learning-lesson.type';
 import type { LearningLevel } from './types/learning-level.type';
+import type { LearningInterest } from './types/learning-interest.type';
 
 /** 学習構成とユーザー進捗の取得・整形を行う */
 @Injectable()
@@ -317,6 +318,42 @@ export class LearningService {
                 passedLessonCount,
                 lessonCount: lessons.length,
                 lessons,
+            };
+        });
+    }
+
+    /**
+     * 選択中の興味をジャンル別の学習情報に整形する
+     *
+     * @param selectedInterests 本人が選択した興味
+     * @param masters 級・レッスンのマスタ一覧
+     * @param progress 本人の級・レッスン進捗
+     * @returns ジャンル別の学習情報
+     */
+    private buildLearningInterests(
+        selectedInterests: SelectedInterest[],
+        masters: LearningMaster[],
+        progress: LearningProgress,
+    ): LearningInterest[] {
+        return selectedInterests.map(({ interest, detailAnswer }) => {
+            const levels = this.buildLearningLevels(
+                masters,
+                interest.id,
+                progress,
+            );
+
+            const hasInProgressLevel = levels.some(
+                (level) =>
+                    level.startedAt !== null && level.completedAt === null,
+            );
+
+            return {
+                id: interest.id,
+                key: interest.key,
+                labelJa: interest.labelJa,
+                detailAnswer,
+                canChange: !hasInProgressLevel,
+                levels,
             };
         });
     }

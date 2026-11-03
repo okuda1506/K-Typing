@@ -49,6 +49,9 @@ jobs:
       - name: Test
         run: npm run test
 
+      - name: Test learning API
+        run: npm run test:e2e -- --runInBand learning.e2e-spec.ts
+
       - name: Test seeds
         run: npm run test:seed
 

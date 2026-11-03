@@ -17,6 +17,7 @@ import type { LessonStatus } from './types/lesson-status.type';
 import type { LearningLesson } from './types/learning-lesson.type';
 import type { LearningLevel } from './types/learning-level.type';
 import type { LearningInterest } from './types/learning-interest.type';
+import type { LearningOverviewResponse } from './types/learning-overview-response.type';
 
 /** 学習構成とユーザー進捗の取得・整形を行う */
 @Injectable()
@@ -358,5 +359,41 @@ export class LearningService {
                 levels,
             };
         });
+    }
+
+    /**
+     * 本人の選択ジャンルごとの学習構成・進捗を取得する
+     *
+     * @param userId ログインユーザーID
+     * @returns ジャンル別の学習一覧（未選択の場合は空）
+     * @throws {NotFoundException} ユーザーが存在しない場合
+     * @throws {InternalServerErrorException} 学習マスタが不正な場合
+     */
+    async getOverview(userId: string): Promise<LearningOverviewResponse> {
+        const selectedInterests = await this.getSelectedInterests(userId);
+
+        if (selectedInterests.length === 0) {
+            return { interests: [] };
+        }
+
+        const masters = await this.getLearningMasters();
+
+        const interestIds = selectedInterests.map(
+            ({ interest }) => interest.id,
+        );
+
+        const progress = await this.getLearningProgress(
+            userId,
+            interestIds,
+            masters,
+        );
+
+        return {
+            interests: this.buildLearningInterests(
+                selectedInterests,
+                masters,
+                progress,
+            ),
+        };
     }
 }

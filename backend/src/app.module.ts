@@ -5,11 +5,11 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
-
 import { aiConfig } from './config/ai.config';
 import { appConfig } from './config/app.config';
 import { authConfig } from './config/auth.config';
 import { OnboardingModule } from './onboarding/onboarding.module';
+import { LearningModule } from './learning/learning.module';
 
 @Module({
     imports: [
@@ -21,6 +21,7 @@ import { OnboardingModule } from './onboarding/onboarding.module';
         UsersModule,
         PrismaModule,
         OnboardingModule,
+        LearningModule,
     ],
     controllers: [AppController],
     providers: [AppService],

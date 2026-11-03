@@ -335,6 +335,7 @@ export class LearningService {
         masters: LearningMaster[],
         progress: LearningProgress,
     ): LearningInterest[] {
+        // 選択中のジャンルごとに級の進捗と興味設定の変更可否をまとめる
         return selectedInterests.map(({ interest, detailAnswer }) => {
             const levels = this.buildLearningLevels(
                 masters,
@@ -342,6 +343,7 @@ export class LearningService {
                 progress,
             );
 
+            // 開始済みで未完了の級がある場合にそのジャンルの設定は変更できないようにする
             const hasInProgressLevel = levels.some(
                 (level) =>
                     level.startedAt !== null && level.completedAt === null,
